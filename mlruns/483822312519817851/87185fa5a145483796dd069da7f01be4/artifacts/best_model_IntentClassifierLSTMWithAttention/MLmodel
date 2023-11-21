@@ -1,0 +1,19 @@
+artifact_path: best_model_IntentClassifierLSTMWithAttention
+flavors:
+  python_function:
+    data: data
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.pytorch
+    pickle_module_name: mlflow.pytorch.pickle_module
+    python_version: 3.9.10
+  pytorch:
+    code: null
+    model_data: data
+    pytorch_version: 2.1.1
+mlflow_version: 2.8.1
+model_size_bytes: 1923152
+model_uuid: e23c85136fe441278bddf3b8a22bb37e
+run_id: 87185fa5a145483796dd069da7f01be4
+utc_time_created: '2023-11-21 21:08:59.326133'

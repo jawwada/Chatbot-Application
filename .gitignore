@@ -1,6 +1,6 @@
 *.csv
 *.db
-mlruns/
+mlruns2/
 ml-artifacts/
 models/
 **.ipynb_checkpoints/

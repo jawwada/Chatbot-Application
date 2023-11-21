@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/ahmedjawad/Documents/Job%20Search/Ultimate%20AI%20Challenge/ultimate_aiv2/mlruns/483822312519817851/06e3499c2c7b4fb3aa918b477c109c1b/artifacts
+end_time: 1700600454475
+entry_point_name: ''
+experiment_id: '483822312519817851'
+lifecycle_stage: active
+run_id: 06e3499c2c7b4fb3aa918b477c109c1b
+run_name: aged-shoat-823
+run_uuid: 06e3499c2c7b4fb3aa918b477c109c1b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700600398866
+status: 3
+tags: []
+user_id: ahmedjawad
