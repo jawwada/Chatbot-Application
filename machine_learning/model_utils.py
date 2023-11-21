@@ -1,19 +1,30 @@
-import torch
-import pandas as pd
-import torch
+"""
+This module contains utility functions for training and evaluating models. You can use these functions to train and
+evaluate any model, not just the ones in this project. You can also use them to train and evaluate models in other
+projects. This module also contains a function for predicting the label of a query using a trained model.
+Additionally, this module contains a function for retrieving the ID of an existing MLflow experiment or creating a new
+one if it doesn't exist. This is useful for logging metrics and artifacts to MLflow.
+"""
 import mlflow
-import optuna
-from torch.utils.data import DataLoader
-from machine_learning.IntentTokenizer import IntentTokenizer
+import torch
 
 
 def train(model, optimizer, loss_function, train_loader, num_epochs=30):
+    """
+    Train the model for the given number of epochs.
+    :param model:  The model to train
+    :param optimizer:   The optimizer to use
+    :param loss_function:   The loss function to use
+    :param train_loader:  The training data loader
+    :param num_epochs:  The number of epochs to train for
+    :return:    The final training loss
+    """
 
     for epoch in range(num_epochs):
         model.train()  # Set the model to training mode
         train_loss = 0.0
         correct = 0
-        total=0
+        total = 0
 
         for batch in train_loader:
             x, y = batch  # Move batch to device
@@ -58,6 +69,15 @@ def train(model, optimizer, loss_function, train_loader, num_epochs=30):
 
 
 def evaluate(model, loss_function, test_loader, data_type="Test"):
+    """
+    Evaluate the model on the given dataset.
+    :param model:   The model to evaluate
+    :param loss_function:   The loss function to use
+    :param test_loader:     The test data loader
+    :param data_type:   The type of data (e.g. "Test", "Validation")
+    :return:    The final test accuracy. Will be 0 if test_loader is None. We are not returning the test loss because
+                we are not using it for anything. If you want to return it, you can.
+    """
     model.eval()  # Set the model to evaluation mode
     test_loss = 0.0
     correct = 0.0
@@ -100,6 +120,14 @@ def evaluate(model, loss_function, test_loader, data_type="Test"):
 
 
 def predict(model, query, tokenizer, device):
+    """
+    Predict the label of the given query.
+    :param model:   The model to use
+    :param query:   The query to predict
+    :param tokenizer:   The tokenizer to use
+    :param device:  The device to use
+    :return:    The predicted label
+    """
     # Tokenize query
     input = tokenizer.get_Inference_Tensor(query, device=device)
     print(input)

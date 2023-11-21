@@ -1,13 +1,14 @@
-import pandas as pd
+import pickle
+from collections import Counter
+
 import numpy as np
 import torch
-from torch.nn.utils.rnn import pad_sequence
 from sklearn.preprocessing import LabelEncoder
-from collections import Counter
-import os, pickle
 from torch.utils.data import TensorDataset
-from torch.utils.data import Dataset, DataLoader
-from utils import build_vocabulary, text_to_indices, convert_and_pad_sequences
+
+from utils import build_vocabulary
+from utils import convert_and_pad_sequences
+from utils import text_to_indices
 
 
 class IntentTokenizer:
@@ -51,9 +52,8 @@ class IntentTokenizer:
             # Maximum vocabulary size
             IntentTokenizer.max_vocab_size = len(IntentTokenizer.word2idx)
             # Label encoder
-            IntentTokenizer.le=LabelEncoder()
+            IntentTokenizer.le = LabelEncoder()
             self.encode_labels(df)
-
 
     def process_data(self, df, device=torch.device("cpu")):
         """Process the data and return a TensorDataset."""
@@ -64,7 +64,7 @@ class IntentTokenizer:
         TCTensor = TensorDataset(padded.to(device), torch.tensor(labels).to(device))
         return TCTensor
 
-    def encode_labels(self,df):
+    def encode_labels(self, df):
         """Encode the labels."""
         # Label encoder, transform the labels to integers if already fitted
         if hasattr(IntentTokenizer.le, 'classes_') and len(IntentTokenizer.le.classes_) > 0:
@@ -78,11 +78,12 @@ class IntentTokenizer:
             IntentTokenizer.le.classes_ = np.append(IntentTokenizer.le.classes_, '<unknown>')
             print("Label Encoding:", dict(zip(self.le.classes_, self.le.transform(self.le.classes_))))
         return labels
+
     def get_Inference_Tensor(self, df, device=torch.device("cpu")):
         """Process the data and return a TensorDataset."""
         if self.word2idx:
             # Initialize the attributes, index_sequences, padded, labels
-            index_sequences = [text_to_indices(text,self.word2idx) for text in df["text"]]
+            index_sequences = [text_to_indices(text, self.word2idx) for text in df["text"]]
             padded = convert_and_pad_sequences(index_sequences,device)
             return padded
         else:
