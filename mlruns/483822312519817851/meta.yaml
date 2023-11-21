@@ -1,6 +1,0 @@
-artifact_location: file:///Users/ahmedjawad/Documents/Job%20Search/Ultimate%20AI%20Challenge/ultimate_aiv2/mlruns/483822312519817851
-creation_time: 1700600333888
-experiment_id: '483822312519817851'
-last_update_time: 1700600333888
-lifecycle_stage: active
-name: IntentClassifierLSTMWithAttention

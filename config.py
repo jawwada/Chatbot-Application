@@ -20,7 +20,7 @@ test_file = 'data/atis/test.tsv'
 train = pd.read_csv(train_file, sep='\t', header=None)
 test = pd.read_csv(test_file, sep='\t', header=None)
 
-max
+
 # Preprocess data
 le = LabelEncoder()
 train_labels = le.fit_transform(train[1])
