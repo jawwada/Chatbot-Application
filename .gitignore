@@ -1,0 +1,16 @@
+*.csv
+*.db
+mlruns/
+ml-artifacts/
+models/
+**.ipynb_checkpoints/
+*.png
+*.jpg
+venv/
+data/
+.idea/
+.vscode/
+*.DS_Store
+*.pyc
+logs/
+```
