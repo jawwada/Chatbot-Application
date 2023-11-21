@@ -1,26 +1,60 @@
+"""
+This script uses Optuna to optimize the hyperparameters of an intent classification model. It uses the
+IntentClassifierLSTMWithAttention model as an example. You can use this script as a template to optimize the
+hyperparameters of your own model.
+
+Following are the steps to use this script:
+1. Define the objective function. This function defines the objective function for Optuna. It trains the model using
+the hyperparameters suggested by Optuna and returns the average validation accuracy. The average validation accuracy
+is used as the objective function for Optuna to optimize.
+2. Define the search space. This is done by using the suggest functions of the trial object. For example, the
+following line of code suggests a learning rate between 1e-3 and 1e-1 on a log scale:
+lr = trial.suggest_float("lr", 1e-3, 1e-1, log=True)
+3. Define the model, loss function, and optimizer. This is done inside the objective function. You can also define
+them outside the objective function and pass them as arguments to the objective function.
+4. Define the KFold cross validation. This is done inside the objective function. You can also define it outside the
+objective function and pass it as an argument to the objective function.
+5. Define the number of trials. This is done in the main function. You can also define it outside the main function
+and pass it as an argument to the main function.
+6. Define the number of epochs. This is done inside the objective function. You can also define it outside the
+objective function and pass it as an argument to the objective function.
+7. Define the number of folds. This is done inside the objective function. You can also define it outside the
+objective function and pass it as an argument to the objective function.
+8. Define the number of epochs in the KFold cross validation. This is done inside the objective function. You can
+also define it outside the objective function and pass it as an argument to the objective function.
+9. Define the optimizer and the loss function. This is done inside the objective function. You can also define them
+outside the objective function and pass them as arguments to the objective function.
+10. Define the model. This is done inside the objective function. You can also define it outside the objective
+function and pass it as an argument to the objective function.
+"""
+
 # Description: Hyperparameter optimization using Optuna
 # This script uses Optuna to optimize the hyperparameters of an intent classification model.
 # It uses the IntentClassifierLSTMWithAttention model as an example.
 #
 
-from sklearn.model_selection import KFold
-import torch.nn as nn
-from machine_learning.IntentClassifierLSTMWithAttention import IntentClassifierLSTMWithAttention
-from machine_learning.IntentTokenizer import IntentTokenizer
-import torch.optim as optim
+import warnings
+
+import mlflow
+import optuna
 import pandas as pd
 import torch
+import torch.nn as nn
+import torch.optim as optim
+from sklearn.model_selection import KFold
 from torch.utils.data import DataLoader
-from machine_learning.model_utils import train, evaluate, predict,get_or_create_experiment
-import optuna
-import warnings
+
+# project imports
+from machine_learning.IntentClassifierLSTMWithAttention import IntentClassifierLSTMWithAttention
+from machine_learning.IntentTokenizer import IntentTokenizer
+from machine_learning.model_utils import evaluate
+from machine_learning.model_utils import get_or_create_experiment
+from machine_learning.model_utils import train
+from machine_learning.model_utils import log_hyperparameters
+from machine_learning.model_utils import log_metrics
+
+# Suppress warnings and set verbosity
 warnings.filterwarnings("ignore", category=UserWarning, message=".*setuptools.*")
-import mlflow
-from optuna.visualization import plot_optimization_history
-import matplotlib.pyplot as plt
-
-
-
 optuna.logging.set_verbosity(optuna.logging.ERROR)
 
 # Load data
@@ -31,46 +65,39 @@ test_df = pd.read_csv('data/atis/test.tsv', sep='\t', header=None, names=["text"
 tokenizer = IntentTokenizer(train_df)
 
 # define constants and hyperparameters
-vocab_size=tokenizer.max_vocab_size+1
-output_dim=len(tokenizer.le.classes_)
+vocab_size = tokenizer.max_vocab_size + 1
+output_dim = len(tokenizer.le.classes_)
 batch_size = 32
 num_epochs = 3
 
 #   Define device
-device=torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 print(f"Using device: {device}")
 
-# Create DataLoaders
+# tokenize and process train and test data and create dataLoaders
+
 train_data = tokenizer.process_data(train_df, device=device)
 train_loader = DataLoader(train_data, shuffle=True, batch_size=batch_size)
 print("Number of training samples:", train_data.tensors[0].size())
 print("Number of training batches:", len(train_loader))
-
 
 test_data = tokenizer.process_data(test_df, device=device)
 print("Number of test samples:", test_data.tensors[0].size())
 test_loader = DataLoader(test_data, shuffle=True, batch_size=batch_size)
 print("Number of test batches:", len(test_loader))
 
-def log_hyperparameters(trial):
-
-    # Log hyperparameters
-    mlflow.log_param("lr", trial.params["lr"])
-    mlflow.log_param("hidden_dim", trial.params["hidden_dim"])
-    mlflow.log_param("embedding_dim", trial.params["embedding_dim"])
-    mlflow.log_param("dropout_rate", trial.params["dropout_rate"])
-    mlflow.log_param("weight_decay", trial.params["weight_decay"])
-    return
-
-def log_metrics(trial, accuracy):
-    # Log metrics
-    mlflow.log_metric("accuracy", accuracy)
-    return
 
 def objective(trial):
+    """
+    This function defines the objective function for Optuna. It trains the model using the hyperparameters suggested
+    by Optuna and returns the average validation accuracy. The average validation accuracy is used as the objective
+    function for Optuna to optimize.
+
+    :param trial:   Optuna trial object
+    :return:    Accuracy
+    """
     with mlflow.start_run():
         # Suggest hyperparameters
-
         lr = trial.suggest_float("lr", 1e-3, 1e-1, log=True)
         hidden_dim = trial.suggest_categorical("hidden_dim", [32, 64, 128, 256])
         embedding_dim = trial.suggest_categorical("embedding_dim", [64, 128, 256, 512])
@@ -78,21 +105,30 @@ def objective(trial):
         weight_decay = trial.suggest_float("weight_decay", 1e-5, 1e-3, log=True)
         criterion = nn.CrossEntropyLoss()
         log_hyperparameters(trial)
+
+        # Pick the model and train it. Evaluate the model on the test set.
         # Model, loss, and optimizer
         # model = IntentClassifierLSTM(cfg.vocab_size, embedding_dim, hidden_dim, cfg.output_dim,dropout_rate).to(device)
-        model = IntentClassifierLSTMWithAttention(vocab_size, embedding_dim, hidden_dim, output_dim, dropout_rate).to(device)
+        model = IntentClassifierLSTMWithAttention(vocab_size, embedding_dim, hidden_dim, output_dim, dropout_rate).to(
+            device)
         optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
-        kfold = KFold(n_splits=2, shuffle=True, random_state=42)
+
+        # Train the model using KFold cross validation for K=5
+        kfold = KFold(n_splits=5, shuffle=True, random_state=42)
         fold_val_acc = []
 
+        # For each fold, train the model and evaluate it on the validation set
         for fold, (train_idx, val_idx) in enumerate(kfold.split(train_df)):
             # Prepare fold data
-            train_data_subset = tokenizer.process_data(train_df.loc[train_idx,:], device=device)
-            val_data_subset = tokenizer.process_data(train_df.loc[val_idx,:], device=device)
+            train_data_subset = tokenizer.process_data(train_df.loc[train_idx, :], device=device)
+            val_data_subset = tokenizer.process_data(train_df.loc[val_idx, :], device=device)
             train_subset_loader = DataLoader(train_data_subset, batch_size=batch_size, shuffle=True)
             val_subset_loader = DataLoader(val_data_subset, batch_size=batch_size, shuffle=False)
+
+            # Train the model
             fold_loss = train(model, optimizer, criterion, train_subset_loader, num_epochs)
-            val_accuracy = evaluate(model,  criterion, val_subset_loader, data_type="Validation")
+            # Evaluate the model on the validation set
+            val_accuracy = evaluate(model, criterion, val_subset_loader, data_type="Validation")
             print(f'Fold: {fold + 1}, Training Loss: {fold_loss:.4f}, Validation Accuracy: {val_accuracy:.4f}')
             fold_val_acc.append(val_accuracy)
         average_val_acc = sum(fold_val_acc) / len(fold_val_acc)
@@ -100,13 +136,19 @@ def objective(trial):
         log_metrics(trial, average_val_acc)
     return average_val_acc
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
+    """
+    Main function. This function defines the experiment and runs Optuna to optimize the hyperparameters. It then
+    trains the model using the best hyperparameters and logs the model and the hyperparameters to MLflow. It also
+    prints the best hyperparameters and the best validation accuracy. It also plots the optimization history and
+    parallel coordinate plots. 
+    """
     experiment_id = get_or_create_experiment("IntentClassifierLSTMWithAttention")
 
     mlflow.set_experiment(experiment_id=experiment_id)
     storage = optuna.storages.RDBStorage(url="sqlite:///:db")
-    study = optuna.create_study(storage=storage,direction="maximize")
+    study = optuna.create_study(storage=storage, direction="maximize")
 
     study.study_name = "IntentClassifierLSTMWithAttention"
     study.optimize(objective, n_trials=2)
@@ -141,9 +183,6 @@ if __name__ == "__main__":
     print("  Params: ")
     for key, value in trial.params.items():
         print("    {}: {}".format(key, value))
-
-
-
 
     # Assuming 'study' is your Optuna study object
     fig = optuna.visualization.plot_optimization_history(study)

@@ -190,3 +190,30 @@ def champion_callback(study, frozen_trial):
             )
         else:
             print(f"Initial trial {frozen_trial.number} achieved value: {frozen_trial.value}")
+
+
+def log_hyperparameters(trial):
+    """
+    Log hyperparameters to MLflow.
+    :param trial:   The trial to log
+    :return:    None
+    """
+    # Log hyperparameters
+    mlflow.log_param("lr", trial.params["lr"])
+    mlflow.log_param("hidden_dim", trial.params["hidden_dim"])
+    mlflow.log_param("embedding_dim", trial.params["embedding_dim"])
+    mlflow.log_param("dropout_rate", trial.params["dropout_rate"])
+    mlflow.log_param("weight_decay", trial.params["weight_decay"])
+    return
+
+
+def log_metrics(trial, accuracy):
+    """
+    Log metrics to MLflow.
+    :param trial:   The trial to log
+    :param accuracy:    The accuracy to log
+    :return:    None
+    """
+    # Log metrics
+    mlflow.log_metric("accuracy", accuracy)
+    return
