@@ -1,3 +1,8 @@
+# Description: Hyperparameter optimization using Optuna
+# This script uses Optuna to optimize the hyperparameters of an intent classification model.
+# It uses the IntentClassifierLSTMWithAttention model as an example.
+#
+
 from sklearn.model_selection import KFold
 import torch.nn as nn
 from machine_learning.IntentClassifierLSTMWithAttention import IntentClassifierLSTMWithAttention
@@ -18,8 +23,11 @@ import matplotlib.pyplot as plt
 
 optuna.logging.set_verbosity(optuna.logging.ERROR)
 
+# Load data
 train_df = pd.read_csv('data/atis/train.tsv', sep='\t', header=None, names=["text", "label"])
 test_df = pd.read_csv('data/atis/test.tsv', sep='\t', header=None, names=["text", "label"])
+
+# Instantiate the tokenizer
 tokenizer = IntentTokenizer(train_df)
 
 # define constants and hyperparameters
@@ -28,14 +36,16 @@ output_dim=len(tokenizer.le.classes_)
 batch_size = 32
 num_epochs = 3
 
-
+#   Define device
 device=torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 print(f"Using device: {device}")
 
+# Create DataLoaders
 train_data = tokenizer.process_data(train_df, device=device)
 train_loader = DataLoader(train_data, shuffle=True, batch_size=batch_size)
 print("Number of training samples:", train_data.tensors[0].size())
 print("Number of training batches:", len(train_loader))
+
 
 test_data = tokenizer.process_data(test_df, device=device)
 print("Number of test samples:", test_data.tensors[0].size())
@@ -43,6 +53,7 @@ test_loader = DataLoader(test_data, shuffle=True, batch_size=batch_size)
 print("Number of test batches:", len(test_loader))
 
 def log_hyperparameters(trial):
+
     # Log hyperparameters
     mlflow.log_param("lr", trial.params["lr"])
     mlflow.log_param("hidden_dim", trial.params["hidden_dim"])

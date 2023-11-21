@@ -13,4 +13,5 @@ data/
 *.DS_Store
 *.pyc
 logs/
+results/
 ```
