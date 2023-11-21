@@ -3,6 +3,17 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class SelfAttentionLayer(nn.Module):
+    """
+    Self-attention layer
+    Architecture:
+        1. Linear transformation for Q, K, V
+        2. Scaled dot-product attention
+        3. Softmax
+        4. Weighted sum of values
+    Purpose:
+        This layer is used to capture the most important information from the input sequence. It multiplies the values
+        with attention weights to get the final output.
+    """
     def __init__(self, feature_size):
         super(SelfAttentionLayer, self).__init__()
         self.feature_size = feature_size
@@ -33,7 +44,21 @@ class SelfAttentionLayer(nn.Module):
 
         return output
 class IntentClassifierLSTMWithAttention(nn.Module):
+    """
+    Intent Classifier LSTM with attention
+    Architecture:
+        1. Embedding layer
+        2. Dropout layer
+        3. LSTM layer
+        4. Self-attention layer
+        5. Batch normalization layer
+        6. Fully connected layer
+    Purpose:
+        This model is used to classify the intent of a sentence. It uses self-attention to capture the most important
+        information from the input sequence.
+    """
     def __init__(self, vocab_size, embedding_dim, hidden_dim, output_dim, dropout_rate):
+
         super(IntentClassifierLSTMWithAttention, self).__init__()
         self.embedding = nn.Embedding(vocab_size, embedding_dim)
         self.dropout = nn.Dropout(dropout_rate)
@@ -43,13 +68,18 @@ class IntentClassifierLSTMWithAttention(nn.Module):
         self.fc = nn.Linear(hidden_dim, output_dim)
 
     def forward(self, x):
+        # Embedding layer
         embedded = self.embedding(x)
+        # Dropout layer
         dropped = self.dropout(embedded)
+        # LSTM layer (returns output and last hidden state)
         lstm_out, _ = self.lstm(dropped)
 
         # Apply attention
         attn_out = self.attention(lstm_out)
+        # Take the output of the last time step
         final_output= attn_out[:, -1, :]
+        # Batch normalization
         normalized = self.batch_norm(final_output)
 
         out = self.fc(normalized)

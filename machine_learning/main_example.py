@@ -1,11 +1,6 @@
 import pandas as pd
-import os
-import numpy as np
 import torch
-from torch.nn.utils.rnn import pad_sequence
 import torch.nn as nn
-import random
-import re
 from machine_learning.IntentTokenizer import IntentTokenizer
 from machine_learning.IntentClassifierLSTMWithAttention import IntentClassifierLSTMWithAttention
 from machine_learning.model_utils import train, evaluate, predict

@@ -1,11 +1,18 @@
-import torch
 import torch.nn as nn
-import torch.optim as optim
-import mlflow
-import mlflow.pytorch
-from torch.utils.tensorboard import SummaryWriter
+
 
 class IntentClassifierLSTM(nn.Module):
+    """
+    Intent Classifier LSTM
+    Architecture:
+        1. Embedding layer
+        2. Dropout layer
+        3. LSTM layer
+        4. Batch normalization layer
+        5. Fully connected layer
+    Purpose:
+        This model is used to classify the intent of a sentence.
+    """
     def __init__(self, vocab_size, embedding_dim, hidden_dim, output_dim, dropout_rate):
         super(IntentClassifierLSTM, self).__init__()
         self.embedding = nn.Embedding(vocab_size, embedding_dim)
