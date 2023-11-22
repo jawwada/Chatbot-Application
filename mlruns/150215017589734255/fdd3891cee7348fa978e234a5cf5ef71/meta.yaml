@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/ahmedjawad/Documents/Job%20Search/Ultimate%20AI%20Challenge/ultimate_aiv2/mlruns/150215017589734255/fdd3891cee7348fa978e234a5cf5ef71/artifacts
+end_time: 1700665216888
+entry_point_name: ''
+experiment_id: '150215017589734255'
+lifecycle_stage: active
+run_id: fdd3891cee7348fa978e234a5cf5ef71
+run_name: orderly-calf-253
+run_uuid: fdd3891cee7348fa978e234a5cf5ef71
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700665156609
+status: 3
+tags: []
+user_id: ahmedjawad

@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/ahmedjawad/Documents/Job%20Search/Ultimate%20AI%20Challenge/ultimate_aiv2/mlruns/150215017589734255/aa4db76707f24d3f8a751cb2f53c1a01/artifacts
+end_time: 1700665104477
+entry_point_name: ''
+experiment_id: '150215017589734255'
+lifecycle_stage: active
+run_id: aa4db76707f24d3f8a751cb2f53c1a01
+run_name: abundant-carp-62
+run_uuid: aa4db76707f24d3f8a751cb2f53c1a01
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700665050504
+status: 3
+tags: []
+user_id: ahmedjawad
