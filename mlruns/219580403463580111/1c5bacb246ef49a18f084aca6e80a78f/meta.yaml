@@ -1,5 +1,5 @@
 artifact_uri: file:///Users/ahmedjawad/Documents/Job%20Search/Ultimate%20AI%20Challenge/ultimate_aiv2/mlruns/219580403463580111/1c5bacb246ef49a18f084aca6e80a78f/artifacts
-end_time: null
+end_time: 1700610665064
 entry_point_name: ''
 experiment_id: '219580403463580111'
 lifecycle_stage: active
@@ -10,6 +10,6 @@ source_name: ''
 source_type: 4
 source_version: ''
 start_time: 1700610606026
-status: 1
+status: 3
 tags: []
 user_id: ahmedjawad

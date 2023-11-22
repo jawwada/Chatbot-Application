@@ -1,6 +1,6 @@
-*.csv
-*.db
-mlruns2/
+
+mlruns/
+logs/
 ml-artifacts/
 models/
 **.ipynb_checkpoints/
@@ -12,6 +12,8 @@ data/
 .vscode/
 *.DS_Store
 *.pyc
-logs/
+
 results/
+*.csv
+*.db
 ```
