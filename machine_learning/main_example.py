@@ -19,7 +19,6 @@ like HuggingFace's Transformers does. This allows you to focus on the model arch
 worrying about the training and evaluation process. You can also easily switch between different models and datasets.
 """
 
-
 import pandas as pd
 import torch
 import torch.nn as nn
@@ -84,9 +83,6 @@ model = IntentClassifierLSTMWithAttention(vocab_size, embedding_dim, hidden_dim,
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
 train(model, optimizer, loss_function, train_loader, num_epochs)
 evaluate(model, loss_function, test_loader)
-
-
-
 
 # Save the model and tokenizer for serving.
 model_name = "IntentClassifierLSTMWithAttention"

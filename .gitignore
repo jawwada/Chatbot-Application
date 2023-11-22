@@ -1,13 +1,11 @@
 
-mlruns2/
+mlruns/
 logs/
 ml-artifacts/
-models/
 **.ipynb_checkpoints/
 *.png
 *.jpg
 venv/
-data/
 .idea/
 .vscode/
 *.DS_Store
