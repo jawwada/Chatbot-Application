@@ -1,5 +1,5 @@
 venv/
-results/
+*results/
 mlruns/
 ml-artifacts
 logs
