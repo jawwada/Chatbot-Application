@@ -35,9 +35,6 @@ print(len(le.classes_))
 output_dim = len(le.classes_) # Number of output classes
 
 
-
-
-
 # Tokenize the text
 # This function splits text into words. Feel free to customize it as needed.
 def tokenize(text):

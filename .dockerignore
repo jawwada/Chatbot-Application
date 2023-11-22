@@ -1,0 +1,10 @@
+venv/
+results/
+mlruns/
+ml-artifacts
+logs
+*.DS_Store
+*.pyc
+*.ipynb_checkpoints
+.idea/
+.vscode/

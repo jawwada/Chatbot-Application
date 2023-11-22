@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
 
-import os
 import argparse
+import os
 from flask import Flask, request, jsonify
+from flasgger import Swagger
 from intent_classifier import IntentClassifier
 from werkzeug.exceptions import BadRequest, InternalServerError
 
 app = Flask(__name__)
+Swagger(app)
 
+@app.route('/api/example', methods=['GET'])
+def example_endpoint():
+    return jsonify({"message": "Success"})
 # Global variable to hold the model
-model = None
 
 @app.route('/ready')
 def ready():
@@ -46,7 +50,7 @@ def internal_error(error):
         "message": str(error) or "Internal server error."
     }), 500
 
-def main():
+if __name__ == '__main__':
     try:
         global model
         arg_parser = argparse.ArgumentParser()
@@ -64,7 +68,4 @@ def main():
         # Raise an internal server error
         raise InternalServerError()
     # Start the Flask app
-    app.run(debug=True, port=args.port)
-
-if __name__ == '__main__':
-    main()
+    app.run(debug=True,port=args.port)
