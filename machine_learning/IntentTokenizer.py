@@ -90,16 +90,19 @@ class IntentTokenizer:
             raise ValueError("Tokenizer not initialized with training data.")
 
 
-    def save_state(self, file_path):
+    def save_state(self, file_path_IntentTokenizer, file_path_LabelEncoder):
         """Save the tokenizer state to a file."""
-        with open(file_path, 'wb') as file:
+        with open(file_path_IntentTokenizer, 'wb') as file:
             pickle.dump(IntentTokenizer.word2idx, file)
+        with open(file_path_LabelEncoder, 'wb') as file:
+            pickle.dump(IntentTokenizer.le, file)
 
-    @classmethod
-    def load_state(cls, file_path):
+    def load_state(cls, file_path_IntentTokenizer, file_path_LabelEncoder):
         """Load the tokenizer state from a file."""
-        with open(file_path, 'rb') as file:
+        with open(file_path_IntentTokenizer, 'rb') as file:
             cls.word2idx = pickle.load(file)
+        with open(file_path_LabelEncoder, 'rb') as file:
+            cls.le = pickle.load(file)
         cls._instance = IntentTokenizer.__new__(cls)
         return cls._instance
 

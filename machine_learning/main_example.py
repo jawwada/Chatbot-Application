@@ -18,6 +18,8 @@ The structure of the script abstracts the training and evaluation process in the
 like HuggingFace's Transformers does. This allows you to focus on the model architecture and hyperparameters without
 worrying about the training and evaluation process. You can also easily switch between different models and datasets.
 """
+
+
 import pandas as pd
 import torch
 import torch.nn as nn
@@ -25,6 +27,7 @@ from machine_learning.IntentTokenizer import IntentTokenizer
 from machine_learning.IntentClassifierLSTMWithAttention import IntentClassifierLSTMWithAttention
 from machine_learning.model_utils import train, evaluate, predict
 from torch.utils.data import DataLoader
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 # Set device
 device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
@@ -34,6 +37,8 @@ print(f"Using device: {device}")
 train_df = pd.read_csv('data/atis/train.tsv', sep='\t', header=None, names=["text", "label"])
 test_df = pd.read_csv('data/atis/test.tsv', sep='\t', header=None, names=["text", "label"])
 tokenizer = IntentTokenizer(train_df)
+tokenizer.save_state("models/IntentClassifierLSTMWithAttention_tokenizer.pickle", "models/IntentClassifierLSTMWithAttention_le.pickle")
+
 # Example usage
 train_data = tokenizer.process_data(train_df,device=device)
 test_data = tokenizer.process_data(test_df,device=device)
@@ -80,14 +85,18 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=
 train(model, optimizer, loss_function, train_loader, num_epochs)
 evaluate(model, loss_function, test_loader)
 
+
+
+
 # Save the model and tokenizer for serving.
 model_name = "IntentClassifierLSTMWithAttention"
 torch.save(model.to(torch.device("cpu")),f"models/{model_name}.pth")
-tokenizer.save_state(f"models/{model_name}_tokenizer.pickle")
-tokenizer = IntentTokenizer.load_state(f"models/{model_name}_tokenizer.pickle")
+tokenizer.save_state(f"models/{model_name}_tokenizer.pickle", f"models/{model_name}_le.pickle")
 
 # Serve the model
+device=torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 model_serve = torch.load(f"models/{model_name}.pth").to(device)
+
 
 # Predict on a query
 max_query_length = 50
