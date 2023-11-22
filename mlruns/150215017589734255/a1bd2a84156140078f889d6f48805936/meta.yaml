@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/ahmedjawad/Documents/Job%20Search/Ultimate%20AI%20Challenge/ultimate_aiv2/mlruns/150215017589734255/a1bd2a84156140078f889d6f48805936/artifacts
+end_time: 1700662715192
+entry_point_name: ''
+experiment_id: '150215017589734255'
+lifecycle_stage: active
+run_id: a1bd2a84156140078f889d6f48805936
+run_name: casual-roo-199
+run_uuid: a1bd2a84156140078f889d6f48805936
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700662660739
+status: 3
+tags: []
+user_id: ahmedjawad

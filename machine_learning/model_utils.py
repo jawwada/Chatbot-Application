@@ -130,7 +130,6 @@ def predict(model, query, tokenizer, device):
     """
     # Tokenize query
     input = tokenizer.get_Inference_Tensor(query, device=device)
-    print(input)
     # Inference
     model.eval()
     with torch.no_grad():

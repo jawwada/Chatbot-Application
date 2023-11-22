@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/ahmedjawad/Documents/Job%20Search/Ultimate%20AI%20Challenge/ultimate_aiv2/mlruns/150215017589734255/551a897970f14ad6b1185309f9d237a5/artifacts
+end_time: 1700662999285
+entry_point_name: ''
+experiment_id: '150215017589734255'
+lifecycle_stage: active
+run_id: 551a897970f14ad6b1185309f9d237a5
+run_name: lyrical-swan-355
+run_uuid: 551a897970f14ad6b1185309f9d237a5
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700662944340
+status: 3
+tags: []
+user_id: ahmedjawad

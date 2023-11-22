@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/ahmedjawad/Documents/Job%20Search/Ultimate%20AI%20Challenge/ultimate_aiv2/mlruns/150215017589734255/1a71155c8a774302a9310eac6c9afd10/artifacts
+end_time: 1700662944326
+entry_point_name: ''
+experiment_id: '150215017589734255'
+lifecycle_stage: active
+run_id: 1a71155c8a774302a9310eac6c9afd10
+run_name: mercurial-shrew-707
+run_uuid: 1a71155c8a774302a9310eac6c9afd10
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1700662888113
+status: 3
+tags: []
+user_id: ahmedjawad
