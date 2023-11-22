@@ -3,8 +3,6 @@ mlruns/
 logs/
 ml-artifacts/
 **.ipynb_checkpoints/
-*.png
-*.jpg
 venv/
 .idea/
 .vscode/
