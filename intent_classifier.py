@@ -19,7 +19,6 @@ class IntentClassifier:
 
     def is_ready(self):
         try:
-            self.model=self.model
             self.model.eval()
             return True
         except:
@@ -50,7 +49,6 @@ class IntentClassifier:
         input_tensor = self.tokenizer.get_Inference_Tensor(query_df, device=self.device)
 
         # Inference
-        self.model.eval()
         with torch.no_grad():
             outputs = self.model(input_tensor)
             probabilities = F.softmax(outputs, dim=1)
