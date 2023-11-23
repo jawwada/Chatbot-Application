@@ -152,7 +152,7 @@ storage = optuna.storages.RDBStorage(url=f"sqlite:///{model_class_name}.db")
 study = optuna.create_study(storage=storage, direction="maximize")
 
 study.study_name = model_class_name
-study.optimize(objective, n_trials=10)
+study.optimize(objective, n_trials=2)
 best_trial = study.best_trial
 
 with mlflow.start_run(experiment_id=experiment_id):

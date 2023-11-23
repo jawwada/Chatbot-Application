@@ -1,7 +1,7 @@
 """
 Main example for training and evaluating a model.
 This script trains a model on the ATIS dataset and evaluates it on the test set. It Also saves the model and tokenizer.
-The model is a LSTM model with attention. The tokenizer is a singleton class that tokenizes text and encodes labels.
+The model is can be a model in the models directory that does not end with _tokenizer or _le, tokenizers and label encoders. The tokenizer is a singleton class that tokenizes text and encodes labels.
 The structure of the code is as follows:
 1. Load and preprocess the data
 2. Create a tokenizer
@@ -27,15 +27,17 @@ from machine_learning.IntentTokenizer import IntentTokenizer
 from machine_learning.model_utils import train, evaluate, predict
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
 import numpy as np
+import warnings
+warnings.filterwarnings("ignore")
 
 # Set device
 device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 print(f"Using device: {device}")
-model_name = "best_ICELSTMAmodel"
+model_name = "IntentClassifierLSTMWithAttention"
 
 
 model_serve = torch.load(f"models/{model_name}.pth").to(device)
-tokenizer = tokenizer = IntentTokenizer.load_state(IntentTokenizer,f"models/{model_name}_tokenizer.pickle", f"models/IntentClassifierLSTMWithAttention_le.pickle")
+tokenizer = tokenizer = IntentTokenizer.load_state(IntentTokenizer,f"models/IntentClassifierLSTMWithAttention_tokenizer.pickle", f"models/IntentClassifierLSTMWithAttention_le.pickle")
 test_df = pd.read_csv('data/atis/test.tsv', sep='\t', header=None, names=["text", "label"])
 
 # compute metrics like accuracy, precision, recall, F1 score

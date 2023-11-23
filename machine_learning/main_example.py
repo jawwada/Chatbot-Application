@@ -36,7 +36,7 @@ print(f"Using device: {device}")
 train_df = pd.read_csv('data/atis/train.tsv', sep='\t', header=None, names=["text", "label"])
 test_df = pd.read_csv('data/atis/test.tsv', sep='\t', header=None, names=["text", "label"])
 tokenizer = IntentTokenizer(train_df)
-tokenizer.save_state("models/IntentClassifierLSTMWithAttention_tokenizer.pickle", "models/IntentClassifierLSTMWithAttention_le.pickle")
+tokenizer.save_state("models/IntentClassifierLSTMWithAttention_tokenizer_example.pickle", "models/IntentClassifierLSTMWithAttention_le_example.pickle")
 
 # Example usage
 train_data = tokenizer.process_data(train_df,device=device)
@@ -85,7 +85,7 @@ train(model, optimizer, loss_function, train_loader, num_epochs)
 evaluate(model, loss_function, test_loader)
 
 # Save the model and tokenizer for serving.
-model_name = "IntentClassifierLSTMWithAttention"
+model_name = "IntentClassifierLSTMWithAttention_main_example"
 torch.save(model.to(torch.device("cpu")),f"models/{model_name}.pth")
 tokenizer.save_state(f"models/{model_name}_tokenizer.pickle", f"models/{model_name}_le.pickle")
 
@@ -97,6 +97,12 @@ model_serve = torch.load(f"models/{model_name}.pth").to(device)
 # Predict on a query
 max_query_length = 50
 query_text = "what airlines off from love field between 6 and 10 am on june sixth"
+query = pd.DataFrame({"text": [query_text]})
+prediction = predict(model_serve, query,tokenizer,device)
+print(f"Predicted label: {prediction}")
+
+max_query_length = 50
+query_text = "I want to book a hotel near miami beach"
 query = pd.DataFrame({"text": [query_text]})
 prediction = predict(model_serve, query,tokenizer,device)
 print(f"Predicted label: {prediction}")
