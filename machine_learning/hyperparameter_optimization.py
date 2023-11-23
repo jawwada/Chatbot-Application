@@ -65,10 +65,10 @@ test_df = pd.read_csv('data/atis/test.tsv', sep='\t', header=None, names=["text"
 tokenizer = IntentTokenizer(train_df)
 
 # define constants and hyperparameters
-vocab_size = tokenizer.max_vocab_size + 1
+vocab_size = tokenizer.max_vocab_size
 output_dim = len(tokenizer.le.classes_)
 batch_size = 32
-num_epochs = 3
+num_epochs = 10
 
 #   Define device
 device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
@@ -98,11 +98,11 @@ def objective(trial):
     """
     with mlflow.start_run():
         # Suggest hyperparameters
-        lr = trial.suggest_float("lr", 1e-3, 1e-1, log=True)
-        hidden_dim = trial.suggest_categorical("hidden_dim", [32, 64, 128, 256])
-        embedding_dim = trial.suggest_categorical("embedding_dim", [64, 128, 256, 512])
+        lr = trial.suggest_float("lr", 1e-4, 1e-2, log=True)
+        hidden_dim = trial.suggest_categorical("hidden_dim", [32, 64, 128])
+        embedding_dim = trial.suggest_categorical("embedding_dim", [64, 128, 256])
         dropout_rate = trial.suggest_float("dropout_rate", 0.1, 0.5)
-        weight_decay = trial.suggest_float("weight_decay", 1e-5, 1e-3, log=True)
+        weight_decay = trial.suggest_float("weight_decay", 1e-6, 1e-3, log=True)
         criterion = nn.CrossEntropyLoss()
         log_hyperparameters(trial)
 
@@ -139,54 +139,55 @@ def objective(trial):
 
 if __name__ == "__main__":
     """
-    Main function. This function defines the experiment and runs Optuna to optimize the hyperparameters. It then
+    Main function. This code below defines the experiment and runs Optuna to optimize the hyperparameters. It then
     trains the model using the best hyperparameters and logs the model and the hyperparameters to MLflow. It also
     prints the best hyperparameters and the best validation accuracy. It also plots the optimization history and
     parallel coordinate plots. 
     """
-    experiment_id = get_or_create_experiment("IntentClassifierLSTMWithAttention")
+model_class_name = "IntentClassifierLSTMWithAttention"
+experiment_id = get_or_create_experiment(model_class_name)
 
-    mlflow.set_experiment(experiment_id=experiment_id)
-    storage = optuna.storages.RDBStorage(url="sqlite:///:db")
-    study = optuna.create_study(storage=storage, direction="maximize")
+mlflow.set_experiment(experiment_id=experiment_id)
+storage = optuna.storages.RDBStorage(url=f"sqlite:///{model_class_name}.db")
+study = optuna.create_study(storage=storage, direction="maximize")
 
-    study.study_name = "IntentClassifierLSTMWithAttention"
-    study.optimize(objective, n_trials=2)
-    best_trial = study.best_trial
+study.study_name = model_class_name
+study.optimize(objective, n_trials=10)
+best_trial = study.best_trial
 
-    with mlflow.start_run(experiment_id=experiment_id):
-        # Log the best parameters
-        mlflow.log_params(best_trial.params)
+with mlflow.start_run(experiment_id=experiment_id):
+    # Log the best parameters
+    mlflow.log_params(best_trial.params)
 
-        # Train the model using best parameters
-        model = IntentClassifierLSTMWithAttention(
-            vocab_size,
-            best_trial.params['embedding_dim'],
-            best_trial.params['hidden_dim'],
-            output_dim,
-            best_trial.params['dropout_rate']
-        ).to(device)
+    # Train the model using best parameters
+    model = IntentClassifierLSTMWithAttention(
+        vocab_size,
+        best_trial.params['embedding_dim'],
+        best_trial.params['hidden_dim'],
+        output_dim,
+        best_trial.params['dropout_rate']
+    ).to(device)
 
-        optimizer = optim.Adam(model.parameters(), lr=best_trial.params['lr'],
-                               weight_decay=best_trial.params['weight_decay'])
-        train_loss = train(model, optimizer, nn.CrossEntropyLoss(), train_loader, 5)
-        test_accuracy = evaluate(model, nn.CrossEntropyLoss(), test_loader, data_type="Test")
-        print(f'Test Accuracy: {test_accuracy:.4f}')
-        mlflow.log_metric("test_accuracy", test_accuracy)
-        mlflow.log_metric("train_loss", train_loss)
-        mlflow.pytorch.log_model(model, f"best_model_{study.study_name}")
+    optimizer = optim.Adam(model.parameters(), lr=best_trial.params['lr'],
+                           weight_decay=best_trial.params['weight_decay'])
+    train_loss = train(model, optimizer, nn.CrossEntropyLoss(), train_loader, 5)
+    test_accuracy = evaluate(model, nn.CrossEntropyLoss(), test_loader, data_type="Test")
+    print(f'Test Accuracy: {test_accuracy:.4f}')
+    mlflow.log_metric("test_accuracy", test_accuracy)
+    mlflow.log_metric("train_loss", train_loss)
+    mlflow.pytorch.log_model(model, f"best_model_{study.study_name}")
 
-    print("Number of finished trials: ", len(study.trials))
-    print("Best trial:")
-    trial = study.best_trial
-    print("  Value: ", trial.value)
-    print("  Params: ")
-    for key, value in trial.params.items():
-        print("    {}: {}".format(key, value))
+print("Number of finished trials: ", len(study.trials))
+print("Best trial:")
+trial = study.best_trial
+print("  Value: ", trial.value)
+print("  Params: ")
+for key, value in trial.params.items():
+    print("    {}: {}".format(key, value))
 
-    # Assuming 'study' is your Optuna study object
-    fig = optuna.visualization.plot_optimization_history(study)
-    fig.show()
+# Assuming 'study' is your Optuna study object
+fig = optuna.visualization.plot_optimization_history(study)
+fig.show()
 
-    fig = optuna.visualization.plot_parallel_coordinate(study)
-    fig.show()
+fig = optuna.visualization.plot_parallel_coordinate(study)
+fig.show()

@@ -39,15 +39,15 @@ class IntentClassifier:
             IntentTokenizer.load_state(IntentTokenizer,
                                        f"models/IntentClassifierLSTMWithAttention_tokenizer.pickle",
                                        f"models/IntentClassifierLSTMWithAttention_le.pickle")
-        self.model.load_state_dict(torch.load(f"models/{file_path}_state_dict.pth", map_location=torch.device('cpu')))
+        self.model.load_state_dict(torch.load(f"models/{file_path}_state_dict.pth", map_location=self.device))
 
-        return True
+        return self.is_ready()
 
     def predict(self, query):
         # Tokenize query
         query_df = pd.DataFrame({"text": [query]})
         input_tensor = self.tokenizer.get_Inference_Tensor(query_df, device=self.device)
-
+        self.model.eval()
         # Inference
         with torch.no_grad():
             outputs = self.model(input_tensor)

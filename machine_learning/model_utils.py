@@ -33,7 +33,7 @@ def train(model, optimizer, loss_function, train_loader, num_epochs=30):
             optimizer.zero_grad()
 
             # Forward pass
-            y_hat = model(x)
+            y_hat = model(x).to(x.device)
 
             # Compute loss
             loss = loss_function(y_hat, y)
@@ -56,10 +56,6 @@ def train(model, optimizer, loss_function, train_loader, num_epochs=30):
         # Compute average losses and accuracy
         train_loss /= len(train_loader)
         acc = correct / total
-
-        # Log metrics
-        mlflow.log_metric("train_loss", train_loss, step=epoch)
-        mlflow.log_metric("train_accuracy", acc, step=epoch)
 
         # Print epoch summary
         print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {train_loss:.4f}, Accuracy: {acc:.4f}')
@@ -88,7 +84,7 @@ def evaluate(model, loss_function, test_loader, data_type="Test"):
             x, y = batch
 
             # Forward pass
-            y_hat = model(x)
+            y_hat = model(x).to(x.device)
 
             # Compute loss
             loss = loss_function(y_hat, y)
@@ -104,15 +100,11 @@ def evaluate(model, loss_function, test_loader, data_type="Test"):
     acc = correct / total
 
     # Log metrics
-    mlflow.log_metric("eval_loss", test_loss)
-    mlflow.log_metric("eval_accuracy", acc)
 
     # Print test results
     print(f"{data_type} Loss: {test_loss:.4f}")
     print(f"{data_type} Accuracy: {acc:.4f}")
 
-    # Optionally log the model
-    mlflow.pytorch.log_model(model, "model")
     return acc
 
 # Example usage

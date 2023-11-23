@@ -50,7 +50,7 @@ class IntentTokenizer:
             IntentTokenizer.word2idx = build_vocabulary(df["text"], max_vocab_size)
             print(f"Actual Vocabulary Size: {len(IntentTokenizer.word2idx)}")
             # Maximum vocabulary size
-            IntentTokenizer.max_vocab_size = len(IntentTokenizer.word2idx)
+            IntentTokenizer.max_vocab_size = len(IntentTokenizer.word2idx)+1
             # Label encoder
             IntentTokenizer.le = LabelEncoder()
             self.encode_labels(df)
