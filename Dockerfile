@@ -4,14 +4,14 @@ RUN apt install curl
 RUN apt-get update
 
 
-# devtools is required for installing prophet
+# install gcc and other packagaes
 RUN apt-get install -y gcc  \
     g++ \
     build-essential  \
     python-dev \
     python3-dev
 
-# install pyodbc
+# upgrade pip
 RUN pip3 install --upgrade pip
 
 # Copy the requirements file and install dependencies
@@ -26,8 +26,10 @@ RUN pip install --upgrade cython numpy==1.26.2
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 RUN pip install flasgger==0.9.7.1
-
 # Copy the rest of the application code, this is done last to avoid running requirements.txt on every code change
 COPY . .
+
+ENV PYTHONPATH "${PYTHONPATH}:/app"
+
 # Set the default command to run the application with Gunicorn
-CMD ["gunicorn", "server", "--model", "models/best_ICELSTMAmodel_ood.pth", "--port", "8080"]
+RUN python server.py --model models/best_ICELSTMAmodel_ood.pth --port 8080
