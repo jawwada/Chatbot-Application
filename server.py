@@ -4,12 +4,13 @@ import argparse
 import os
 from flask import Flask, request, jsonify
 from flasgger import Swagger
-from intent_classifier import IntentClassifier
+from machine_learning.IntentClassifierLSTMWithAttention import IntentClassifierLSTMWithAttention
 from werkzeug.exceptions import BadRequest, InternalServerError
+from intent_classifier import IntentClassifier
 
 app = Flask(__name__)
 Swagger(app)
-
+model = None
 @app.route('/api/example', methods=['GET'])
 def example_endpoint():
     return jsonify({"message": "Success"})
@@ -52,15 +53,17 @@ def internal_error(error):
 
 if __name__ == '__main__':
     try:
-        global model
         arg_parser = argparse.ArgumentParser()
         arg_parser.add_argument('--model', type=str, required=True, help='Path to model directory or file.')
         arg_parser.add_argument('--port', type=int, default=os.getenv('PORT', 8080), help='Server port number.')
         args = arg_parser.parse_args()
+        print(args.model)
 
         # Initialize and load the model
-        model = IntentClassifier()
+        model = IntentClassifier(args.model)
         model.load(args.model)
+        print("model loaded")
+        print(model.predict("Hi I am running and will got to new york"))
         if not model.is_ready():
             raise Exception("Model is not ready.")
     except Exception as e:
@@ -68,4 +71,4 @@ if __name__ == '__main__':
         # Raise an internal server error
         raise InternalServerError()
     # Start the Flask app
-    app.run(debug=True,port=args.port)
+    app.run(host='0.0.0.0', port=args.port)

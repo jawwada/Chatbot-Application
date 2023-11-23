@@ -5,31 +5,34 @@ import json
 import pandas as pd
 import torch
 from machine_learning.IntentTokenizer import IntentTokenizer
+from machine_learning.IntentClassifierLSTMWithAttention import IntentClassifierLSTMWithAttention
 import torch.nn.functional as F
 
 class IntentClassifier:
     device=None
     model=None
     tokenizer=None
-    def __init__(self):
+    def __init__(self,model_name=None):
        self.device = torch.device("cuda" if torch.cuda.is_available()
                                    else "mps" if torch.backends.mps.is_available() else "cpu")
-
+       if model_name=="IntentClassifierLSTMWithAttention_small":
+           self.model=IntentClassifierLSTMWithAttention.from_config_file(f"config/{model_name}.json")
 
     def is_ready(self):
         try:
-            self.model=self.model.to(self.device)
+            self.model=self.model.to(torch.device("cpu"))
             self.model.eval()
             return True
         except:
             return False
 
     def load(self, file_path):
-        self.model = torch.load(file_path)
-        self.tokenizer = tokenizer = tokenizer = \
+
+        self.tokenizer = \
             IntentTokenizer.load_state(IntentTokenizer,
                                        f"models/IntentClassifierLSTMWithAttention_tokenizer.pickle",
                                        f"models/IntentClassifierLSTMWithAttention_le.pickle")
+        self.model.load_state_dict(torch.load(f"models/{file_path}_state_dict.pth", map_location=torch.device('cpu')))
 
         return True
 

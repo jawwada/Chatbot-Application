@@ -9,7 +9,9 @@ from torch.nn.utils.rnn import pad_sequence
 import torch.nn as nn
 import random
 
-device = torch.device("mps")
+device = torch.device("cuda" if torch.cuda.is_available() else
+                      "mps" if torch.backends.mps.is_available() else
+                      "cpu")
 # Instantiate the model
 
 

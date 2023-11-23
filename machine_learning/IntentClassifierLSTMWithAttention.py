@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import json
 
 class SelfAttentionLayer(nn.Module):
     """
@@ -57,7 +58,13 @@ class IntentClassifierLSTMWithAttention(nn.Module):
         This model is used to classify the intent of a sentence. It uses self-attention to capture the most important
         information from the input sequence.
     """
-    def __init__(self, vocab_size, embedding_dim, hidden_dim, output_dim, dropout_rate):
+    def __init__(self, vocab_size=None, embedding_dim=None, hidden_dim=None, output_dim=None, dropout_rate=None):
+
+        self.vocab_size = vocab_size
+        self.embedding_dim = embedding_dim
+        self.hidden_dim = hidden_dim
+        self.output_dim = output_dim
+        self.dropout_rate = dropout_rate
 
         super(IntentClassifierLSTMWithAttention, self).__init__()
         self.embedding = nn.Embedding(vocab_size, embedding_dim)
@@ -66,6 +73,34 @@ class IntentClassifierLSTMWithAttention(nn.Module):
         self.attention = SelfAttentionLayer(hidden_dim)
         self.batch_norm = nn.BatchNorm1d(hidden_dim)
         self.fc = nn.Linear(hidden_dim, output_dim)
+
+    @classmethod
+    def from_config_file(cls, config_file_path):
+        with open(config_file_path, 'r') as config_file:
+            config = json.load(config_file)
+
+        return cls(
+            vocab_size=config['vocab_size'],
+            embedding_dim=config['embedding_dim'],
+            hidden_dim=config['hidden_dim'],
+            output_dim=config['output_dim'],
+            dropout_rate=config['dropout_rate']
+        )
+    def load(self, model_file_path):
+        self.load_state_dict(torch.load(model_file_path),map_location=torch.device('cpu'))
+        return
+    def save_config_file(self, config_file_path):
+        config = {
+            'vocab_size': self.vocab_size,
+            'embedding_dim': self.embedding_dim,
+            'hidden_dim': self.hidden_dim,
+            'output_dim': self.output_dim,
+            'dropout_rate': self.dropout_rate
+        }
+
+        with open(config_file_path, 'w') as config_file:
+            json.dump(config, config_file)
+        return
 
     def forward(self, x):
         # Embedding layer

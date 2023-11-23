@@ -27,9 +27,8 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 RUN pip install flasgger==0.9.7.1
 # Copy the rest of the application code, this is done last to avoid running requirements.txt on every code change
+
 COPY . .
 
-ENV PYTHONPATH "${PYTHONPATH}:/app"
-
-# Set the default command to run the application with Gunicorn
-RUN python server.py --model models/best_ICELSTMAmodel_ood.pth --port 8080
+# Set the default command to run the application with python
+CMD ["python", "server.py", "--model", "IntentClassifierLSTMWithAttention_small", "--port", "8080"]
