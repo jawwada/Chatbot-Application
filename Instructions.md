@@ -1,4 +1,6 @@
 # Atis Intent Classification
+TODO: Main things to add in the project
+ mainly swagger, yaml, architecure diagram (swagger, flask, redis, machine learning experiment management, logging of user interactions for future model learnings, pytest
 
 TODO: Add an Architecture Diagram of the project
 the architecture diagram is added in the architecture folder. It is a high level architecture diagram. It included the User, Flask Server, interacting with User with Swagger UI. 
