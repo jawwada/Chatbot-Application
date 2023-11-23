@@ -12,19 +12,27 @@ class IntentClassifier:
     device=None
     model=None
     tokenizer=None
-    def __init__(self,model_name=None):
+    def __init__(self,model_class_name=None):
        self.device = torch.device("cuda" if torch.cuda.is_available()
                                    else "mps" if torch.backends.mps.is_available() else "cpu")
-       if model_name=="IntentClassifierLSTMWithAttention_small":
-           self.model=IntentClassifierLSTMWithAttention.from_config_file(f"config/{model_name}.json")
+       self.model=self.create_object(model_class_name).to(self.device)
 
     def is_ready(self):
         try:
-            self.model=self.model.to(torch.device("cpu"))
+            self.model=self.model
             self.model.eval()
             return True
         except:
             return False
+
+    import json
+
+    def create_object(self,load_class_name):
+        with open(f"config/{load_class_name}.json", 'r') as file:
+            parameters = json.load(file)
+
+        class_ = globals()[load_class_name]
+        return class_(**parameters)
 
     def load(self, file_path):
 

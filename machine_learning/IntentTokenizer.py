@@ -39,7 +39,7 @@ class IntentTokenizer:
             cls._instance = super(IntentTokenizer, cls).__new__(cls)
         return cls._instance
 
-    def __init__(self, df, max_vocab_size=1000):
+    def __init__(self, df, max_vocab_size=5000):
         # Initialize the tokenizer
         if not IntentTokenizer.word2idx:
             # Initialize the attributes
@@ -48,7 +48,7 @@ class IntentTokenizer:
             print("inside IntentTokenizer")
             # Build the vocabulary
             IntentTokenizer.word2idx = build_vocabulary(df["text"], max_vocab_size)
-            print(f"Vocabulary Size: {len(IntentTokenizer.word2idx)}")
+            print(f"Actual Vocabulary Size: {len(IntentTokenizer.word2idx)}")
             # Maximum vocabulary size
             IntentTokenizer.max_vocab_size = len(IntentTokenizer.word2idx)
             # Label encoder
