@@ -1,5 +1,25 @@
 # Atis Intent Classification
 
+TODO: Add an Architecture Diagram of the project
+the architecture diagram is added in the architecture folder. It is a high level architecture diagram. It included the User, Flask Server, interacting with User with Swagger UI. 
+The models is cached flask_cache to Redis Server. There is a the CI/CD pipeline as well. Git Repo, webhooks, deployment to kubernetes or app service.
+The Machine Learning Part and Server Part are decoupled. The Machine Learning Part can be deployed as a separate service, via MLFlow/Azure ML/Amazon SageMaker/Vertex AI. 
+The modeler updates the model parameters through json files and sends it to the server. The server loads the model and serves the model.
+The Logging can be done via Python Logging Module, Splunk or ELK. Add Logging in the architecture diagram.
+
+TODO: Add an example CI/CD Pipeline (complete yaml file) of the project
+Git Repo, webhooks, jenkins-to build and ship deployment to kubernetes or app service.
+
+TODO: Add swagger work and a Swagger Documentation Screenshot of the project
+the Swagger Documentation Screenshot is added in the architecture folder. It shows the Swagger Documentation for the project.
+
+TODO: Add pytest, a Unit Testing for Model and Flask Server 
+
+TODO: Add a Logging Mechanism for Flask Server. Python logging module in combination with Flask_logging, Splunk or ELK can be used for logging.
+
+## Table of Contents
+
+
 ## Project Overview
 This project focuses on Intent Classification, leveraging a pytorch based machine learning model for analysis and inference. Additionally, it showcases model deployment via a Docker-based Flask web server, enabling request handling and server interaction. 
 The purpose of this project is to show case an initial but robust frame work to reserach, experiment, manager and deploy machine learning models.
