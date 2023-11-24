@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 1m  # By default, scrape targets every 15 seconds.
+
+scrape_configs:
+  - job_name: 'flask_app'
+    scrape_interval: 1m  # Scrape the Flask app every 5 seconds. You can adjust this interval.
+    static_configs:
+      - targets: ['localhost:8080']  # Assumes the Flask app is running on localhost at port 8080.

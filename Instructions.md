@@ -2,6 +2,9 @@
 TODO: Main things to add in the project
  mainly swagger, yaml, architecure diagram (swagger, flask, redis, machine learning experiment management, logging of user interactions for future model learnings, pytest
 
+
+
+
 TODO: Add an Architecture Diagram of the project
 the architecture diagram is added in the architecture folder. It is a high level architecture diagram. It included the User, Flask Server, interacting with User with Swagger UI. 
 The models is cached flask_cache to Redis Server. There is a the CI/CD pipeline as well. Git Repo, webhooks, deployment to kubernetes or app service.
@@ -20,6 +23,78 @@ TODO: Add pytest, a Unit Testing for Model and Flask Server
 TODO: Add a Logging Mechanism for Flask Server. Python logging module in combination with Flask_logging, Splunk or ELK can be used for logging.
 
 ## Table of Contents
+1. Setup logging
+brew install grafana
+brew services start grafana
+
+brew install prometheus
+
+
+2. Run Prometheus
+Start Prometheus using the configuration file where you specified your Flask app as a target.
+
+```bash
+prometheus --config.file=prometheus.yml
+```
+
+Example logs maintained in logs/flask-logs.log
+2023-11-24 00:55:21,985 - server_full - ERROR - Server encountered an internal error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
+2023-11-24 00:56:26,057 - server_full - INFO - Loading model.IntentClassifierLSTMWithAttention
+2023-11-24 00:56:26,080 - server_full - INFO - Application started successfully
+2023-11-24 00:56:29,128 - server_full - INFO - User entry: find me a flight to miami
+2023-11-24 00:56:29,128 - server_full - INFO - Predicted intent: [{'label': 'flight', 'confidence': 0.9681052565574646}, {'label': 'flight_time', 'confidence': 0.006745603866875172}, {'label': 'airport', 'confidence': 0.0047215186059474945}]
+2023-11-24 00:58:02,219 - server_full - INFO - Loading model.IntentClassifierLSTMWithAttention
+2023-11-24 00:58:02,242 - server_full - INFO - Application started successfully
+2023-11-24 00:58:22,076 - server_full - INFO - User entry: find me a flight to miami
+2023-11-24 00:58:22,076 - server_full - INFO - Predicted intent: [{'label': 'flight', 'confidence': 0.9681052565574646}, {'label': 'flight_time', 'confidence': 0.006745603866875172}, {'label': 'airport', 'confidence': 0.0047215186059474945}]
+2023-11-24 00:58:34,544 - server_full - INFO - User entry: find me a flight to miami
+2023-11-24 00:58:34,544 - server_full - INFO - Predicted intent: [{'label': 'flight', 'confidence': 0.9681052565574646}, {'label': 'flight_time', 'confidence': 0.006745603866875172}, {'label': 'airport', 'confidence': 0.0047215186059474945}]
+2023-11-24 01:06:49,831 - server_full - INFO - User entry: set an alarm for 7 AM
+
+install filebeat and configure it to send logs to elk server or splunk server
+
+
+3. Run Grafana
+4. Run Flask Server
+5. Configure Prometheus
+6. Verify Metrics Collection
+7. Setup Grafana
+8. Make 100 requests to flask server
+9. How to store intents requests and responses in a database
+
+
+
+
+Now, Prometheus will scrape metrics from your Flask application at the specified intervals.
+
+6. Verify Metrics Collection
+Open your browser and navigate to http://localhost:9090 (or wherever your Prometheus instance is running). Use the Prometheus UI to query and verify that metrics from your Flask app are being collected.
+
+Also, you can check the /metrics endpoint of your Flask app directly by navigating to http://localhost:5000/metrics (adjust the port if necessary) to see the raw metrics being exposed.
+Setup Grafana;
+go to http://localhost:3000
+set up data source as prometheus, and add the prometheus url as http://localhost:9090
+
+Make 100 requests to flask server
+python make_requests.py
+
+
+
+How to store intents requests and responses in a database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///requests.db'
+db = SQLAlchemy(app)
+class Request(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    request = db.Column(db.String(200), nullable=False)
+    response = db.Column(db.String(200), nullable=False)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return '<Request %r>' % self.id
+Browse Database and share screenshots
+Share screen shots of prometheus, grafana, database, swagger.
+
+
 
 
 ## Project Overview
