@@ -5,6 +5,7 @@ import json
 import pandas as pd
 import torch
 from machine_learning.learners.IntentTokenizer import IntentTokenizer
+from machine_learning.learners.IntentClassifierLSTMWithAttention import IntentClassifierLSTMWithAttention
 import torch.nn.functional as F
 
 class IntentClassifier:
@@ -24,9 +25,8 @@ class IntentClassifier:
             return False
 
     def create_object(self,load_class_name):
-        with open(f"config/{load_class_name}.json", 'r') as file:
+        with open(f"config/model_initialization/{load_class_name}.json", 'r') as file:
             parameters = json.load(file)
-
         class_ = globals()[load_class_name]
         return class_(**parameters)
 
@@ -34,9 +34,9 @@ class IntentClassifier:
 
         self.tokenizer = \
             IntentTokenizer.load_state(IntentTokenizer,
-                                       f"../../models/IntentClassifierLSTMWithAttention_tokenizer.pickle",
-                                       f"models/IntentClassifierLSTMWithAttention_le.pickle")
-        self.model.load_state_dict(torch.load(f"models/{file_path}_state_dict.pth", map_location=self.device))
+                                       f"data/models/IntentClassifierLSTMWithAttention_tokenizer.pickle",
+                                       f"data/models/IntentClassifierLSTMWithAttention_le.pickle")
+        self.model.load_state_dict(torch.load(f"data/models/{file_path}_state_dict.pth", map_location=self.device))
 
         return self.is_ready()
 

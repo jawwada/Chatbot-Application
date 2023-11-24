@@ -35,9 +35,11 @@ print(f"Using device: {device}")
 model_name = "IntentClassifierLSTMWithAttention"
 
 
-model_serve = torch.load(f"models/{model_name}.pth").to(device)
-tokenizer = tokenizer = IntentTokenizer.load_state(IntentTokenizer,f"models/IntentClassifierLSTMWithAttention_tokenizer.pickle", f"models/IntentClassifierLSTMWithAttention_le.pickle")
-test_df = pd.read_csv('data/atis/test.tsv', sep='\t', header=None, names=["text", "label"])
+model_serve = torch.load(f"data/models/{model_name}.pth").to(device)
+tokenizer = tokenizer = IntentTokenizer.load_state(IntentTokenizer,
+                                                   f"data/models/IntentClassifierLSTMWithAttention_tokenizer.pickle",
+                                                   f"data/models/IntentClassifierLSTMWithAttention_le.pickle")
+test_df = pd.read_csv('data/input/atis/test.tsv', sep='\t', header=None, names=["text", "label"])
 
 # compute metrics like accuracy, precision, recall, F1 score
 # Accuracy

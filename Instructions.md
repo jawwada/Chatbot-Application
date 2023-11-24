@@ -1,4 +1,4 @@
-# Sensor Fault Detection
+# Intent Classification
 
 ## Project Overview
 This project focuses on Text Classification for text data, leveraging a Neural Networks based machine learning model. Additionally, it showcases model deployment via a Docker-based Flask web server, enabling request handling and server interaction. 
@@ -15,10 +15,6 @@ Key features and processes within the project include:
 
 
 ## Requirements
-- Python 3.8
-- Docker (for Docker-based setup)
-- PyCharm or Visual Studio Code (for IDE-based setup)
-## Requirements
 - Python 3.9.10
 - Docker (for Docker-based setup)
 - PyCharm or Visual Studio Code (for IDE-based setup)
@@ -29,7 +25,7 @@ Key features and processes within the project include:
 
 To run the project from shell/locally , navigate to the project directory and set the PYTHONPATH:
 ```bash
-cd sensor_fault_detection
+cd ultimate-ai-challenge
 export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 ```
 

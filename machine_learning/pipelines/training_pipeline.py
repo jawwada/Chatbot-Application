@@ -32,10 +32,10 @@ device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.ba
 print(f"Using device: {device}")
 
 # Load and preprocess the data
-train_df = pd.read_csv('data/atis/train.tsv', sep='\t', header=None, names=["text", "label"])
-test_df = pd.read_csv('data/atis/test.tsv', sep='\t', header=None, names=["text", "label"])
+train_df = pd.read_csv('data/input/atis/train.tsv', sep='\t', header=None, names=["text", "label"])
+test_df = pd.read_csv('data/input/atis/test.tsv', sep='\t', header=None, names=["text", "label"])
 tokenizer = IntentTokenizer(train_df)
-tokenizer.save_state("models/IntentClassifierLSTMWithAttention_tokenizer_example.pickle", "models/IntentClassifierLSTMWithAttention_le_example.pickle")
+tokenizer.save_state("data/models/IntentClassifierLSTMWithAttention_le_example.pickle'", "data/models/IntentClassifierLSTMWithAttention_le_example.pickle")
 
 # Example usage
 train_data = tokenizer.process_data(train_df,device=device)
@@ -85,12 +85,12 @@ evaluate(model, loss_function, test_loader)
 
 # Save the model and tokenizer for serving.
 model_name = "IntentClassifierLSTMWithAttention_main_example"
-torch.save(model.to(torch.device("cpu")),f"models/{model_name}.pth")
-tokenizer.save_state(f"models/{model_name}_tokenizer.pickle", f"models/{model_name}_le.pickle")
+torch.save(model.to(torch.device("cpu")),f"data/models/{model_name}.pth")
+tokenizer.save_state(f"data/models/{model_name}_tokenizer.pickle", f"data/models/{model_name}_le.pickle")
 
 # Serve the model
 device=torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
-model_serve = torch.load(f"models/{model_name}.pth").to(device)
+model_serve = torch.load(f"data/models/{model_name}.pth").to(device)
 
 
 # Predict on a query
