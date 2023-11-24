@@ -8,8 +8,6 @@ venv/
 .vscode/
 *.DS_Store
 *.pyc
-data/*
-!data/atis/**
 
 results/
 *.csv
