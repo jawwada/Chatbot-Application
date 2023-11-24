@@ -22,11 +22,10 @@ worrying about the training and evaluation process. You can also easily switch b
 import pandas as pd
 import torch
 import torch.nn as nn
-from machine_learning.IntentTokenizer import IntentTokenizer
-from machine_learning.IntentClassifierLSTMWithAttention import IntentClassifierLSTMWithAttention
-from machine_learning.model_utils import train, evaluate, predict
+from machine_learning.learners.IntentTokenizer import IntentTokenizer
+from machine_learning.learners.IntentClassifierLSTMWithAttention import IntentClassifierLSTMWithAttention
+from machine_learning.learners.model_utils import train, evaluate, predict
 from torch.utils.data import DataLoader
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 # Set device
 device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")

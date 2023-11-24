@@ -6,8 +6,8 @@ import time
 from flask import Flask, request, jsonify
 from flasgger import Swagger
 from werkzeug.exceptions import BadRequest, InternalServerError
-from intent_classifier import IntentClassifier
-from log_handler import file_handler, log_level
+from machine_learning.learners.intent_classifier import IntentClassifier
+from config.log_handler import file_handler, log_level
 from prometheus_flask_exporter import PrometheusMetrics, Counter, Histogram
 from flask_sqlalchemy import SQLAlchemy
 

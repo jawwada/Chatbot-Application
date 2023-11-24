@@ -45,13 +45,13 @@ from sklearn.model_selection import KFold
 from torch.utils.data import DataLoader
 
 # project imports
-from machine_learning.IntentClassifierLSTMWithAttention import IntentClassifierLSTMWithAttention
-from machine_learning.IntentTokenizer import IntentTokenizer
-from machine_learning.model_utils import evaluate
-from machine_learning.model_utils import get_or_create_experiment
-from machine_learning.model_utils import train
-from machine_learning.model_utils import log_hyperparameters
-from machine_learning.model_utils import log_metrics
+from machine_learning.learners.IntentClassifierLSTMWithAttention import IntentClassifierLSTMWithAttention
+from machine_learning.learners.IntentTokenizer import IntentTokenizer
+from machine_learning.learners.model_utils import evaluate
+from machine_learning.learners.model_utils import get_or_create_experiment
+from machine_learning.learners.model_utils import train
+from machine_learning.learners.model_utils import log_hyperparameters
+from machine_learning.learners.model_utils import log_metrics
 
 # Suppress warnings and set verbosity
 warnings.filterwarnings("ignore", category=UserWarning, message=".*setuptools.*")

@@ -22,9 +22,8 @@ worrying about the training and evaluation process. You can also easily switch b
 
 import pandas as pd
 import torch
-import torch.nn as nn
-from machine_learning.IntentTokenizer import IntentTokenizer
-from machine_learning.model_utils import train, evaluate, predict
+from machine_learning.learners.IntentTokenizer import IntentTokenizer
+from machine_learning.learners.model_utils import predict
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
 import numpy as np
 import warnings
