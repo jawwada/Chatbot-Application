@@ -14,3 +14,4 @@ results/
 *.db
 bert-results/
 *.tar.gz
+.pytest_cache/

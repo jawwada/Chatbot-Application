@@ -79,6 +79,20 @@ Make 100 requests to flask server
 python make_requests.py
 
 
+*****
+
+Swagger is also done
+http://localhost:8090/apidocs/
+Just check the port name, it is 8090
+I have added the swagger documentation screenshot in the architecture folder
+it is implemented in server0.2.py. change the port to 8080 there and run the server and go to http://localhost:8080/apidocs/
+Also look at the api testing and if there is an error
+
+*****
+
+Only architecture diagram is left
+
+
 
 How to store intents requests and responses in a database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///requests.db'
@@ -177,7 +191,10 @@ docker run -p 8080:8080 ultimate-ai-challenge
 ```
 Keep server running, open another prompt, go to project root, setup python path like above and make example request for model inference:
 
+Todo: incorporate swagger in the docker setup, include the swagger documentation in the docker image, also swagfrom code structure sall be used to generate the swagger documentation
+and not the comments structure
 
+```bash
 ### 3. IDE Setup
 To run the project using an IDE, first set the working directory to project root
 then run any of the files in the `src` directory.
@@ -290,3 +307,133 @@ Intent Classifier Wrapper (intent_classifier.py): Provides a high-level interfac
 Utility Functions (utils.py): Includes functions for tokenization, vocabulary building, label encoding, and sequence padding.
 
 The purpose of this repo is to present a robust intent classification system with a focus on modularity, allowing for easy experimentation and extension. The integration of MLflow and Optuna for experiment tracking and hyperparameter optimization showcases a professional approach to machine learning development
+
+
+edge caes to handle:
+Out-of-Scope Queries:
+
+Users may ask questions or make requests that are unrelated to the bot's intended purpose. Handling such queries gracefully is important.
+Ambiguous Queries:
+
+Users may provide incomplete or ambiguous input that the bot struggles to understand. The bot should seek clarification or provide a helpful response.
+Spelling and Typing Errors:
+
+Users may make typographical errors or misspell words. The bot should attempt to correct or interpret these errors to provide relevant responses.
+Slang and Abbreviations:
+
+Users often use slang, abbreviations, or informal language. The bot should be capable of understanding and responding appropriately.
+Multilingual and Multidialectal Input:
+
+Users may communicate in different languages or dialects. A multilingual bot should handle these variations and provide responses in the user's preferred language.
+User Frustration and Impatience:
+
+Users may become frustrated or impatient if they don't receive immediate assistance. The bot should detect user frustration and respond empathetically.
+Long and Complex Queries:
+
+Some users may pose lengthy or complex questions. The bot should manage long conversations and provide concise, relevant answers.
+Non-Text Input:
+
+Users might send images, voice messages, or other non-textual content. The bot should be able to process and respond to different media types if necessary.
+User Privacy and Security:
+
+Users might share sensitive information inadvertently. The bot should handle such data with care and follow privacy and security best practices.
+Repetitive Queries:
+
+Users may ask the same question repeatedly, expecting a different answer. The bot should recognize these patterns and respond appropriately.
+User Misunderstanding:
+
+Users might misinterpret the bot's responses or intentions. The bot should be prepared to provide clarifications and avoid misunderstandings.
+Handling User Criticism:
+
+Users may express criticism or negative feedback. The bot should handle criticism professionally and attempt to address user concerns.
+Humor and Casual Conversation:
+
+Users might engage in casual or humorous conversations. While maintaining professionalism, the bot can engage in light banter if appropriate.
+Inappropriate or Offensive Content:
+
+Users may use offensive language or engage in inappropriate behavior. The bot should have mechanisms to detect and respond to such content or report it.
+Integration with Third-Party Services:
+
+If the bot integrates with external services or APIs, it should handle cases where those services are temporarily unavailable or return errors.
+Fallback Mechanisms:
+
+When the bot cannot understand or process a user's input, it should have a robust fallback mechanism to gracefully handle the situation and potentially transfer the conversation to a human agent.
+Context Switching:
+
+Users might switch topics or contexts within a conversation. The bot should be capable of maintaining context and switching smoothly between topics.
+User Goodbyes:
+
+Users may abruptly end a conversation. The bot should acknowledge the user's intention to leave and provide a pleasant closing message.
+Understanding Emotions:
+
+Detecting and responding to user emotions, such as frustration or sadness, can enhance the user experience.
+Legal and Ethical Considerations:
+
+Ensure the chatbot complies with legal and ethical guidelines, such as privacy laws and regulations related to data handling and user consent.
+Designing a chatbot to handle these edge cases requires a combination of natural language processing (NLP) capabilities, robust dialogue management, and careful consideration of user experience principles. Regular testing and user feedback are crucial for identifying and addressing these edge cases in a chatbot's design.
+
+User
+What are the edge cases for flask server
+ChatGPT
+When designing and developing a Flask server or any web application, it's important to consider various edge cases to ensure that your server behaves correctly and robustly. Here are some common edge cases to consider when working with a Flask server:
+
+Invalid HTTP Methods:
+
+Ensure that your server handles HTTP methods like GET, POST, PUT, DELETE, etc., appropriately and returns the correct HTTP status codes for unsupported methods.
+HTTP Status Codes:
+
+Handle and return the appropriate HTTP status codes for various scenarios, such as success, errors, redirections, and client errors.
+404 Not Found:
+
+Implement a custom error handler for 404 errors to provide helpful responses for URLs that do not exist.
+Timeouts:
+
+Consider how your server handles requests that take too long to process, and implement appropriate timeouts to prevent resource exhaustion.
+Large Requests and Responses:
+
+Test how your server behaves when handling large payloads or responses, and implement appropriate handling and validation.
+Security Vulnerabilities:
+
+Address security concerns, such as SQL injection, Cross-Site Scripting (XSS), Cross-Site Request Forgery (CSRF), and other vulnerabilities.
+Authentication and Authorization:
+
+Ensure that your server correctly handles authentication and authorization, including edge cases like expired tokens or unauthorized access.
+Concurrency and Race Conditions:
+
+Consider how your server handles multiple simultaneous requests and whether it's susceptible to race conditions or resource conflicts.
+CORS (Cross-Origin Resource Sharing):
+
+Implement proper CORS handling to allow or restrict access to your server's resources from different origins.
+Content Negotiation:
+
+Handle content negotiation correctly, allowing clients to specify the desired response format (e.g., JSON, XML) using request headers.
+Unicode and Character Encoding:
+
+Ensure your server correctly handles Unicode characters and character encodings, preventing issues with character set mismatches.
+Request Headers and Query Parameters:
+
+Validate and handle request headers and query parameters properly, taking into account edge cases like missing or malformed headers/parameters.
+Request and Response Size Limits:
+
+Set reasonable limits on request and response sizes to prevent denial of service attacks or excessive resource consumption.
+Server Crashes and Failures:
+
+Implement error handling and recovery mechanisms to gracefully handle server crashes and failures, minimizing downtime.
+Data Serialization and Deserialization:
+
+Handle data serialization (e.g., JSON) and deserialization correctly, considering edge cases related to data format errors or invalid input.
+File Uploads:
+
+If your server allows file uploads, validate and handle uploaded files securely to prevent security risks like file overwrites or execution vulnerabilities.
+Robust Logging:
+
+Ensure that your server logs important events, errors, and exceptions, making it easier to diagnose issues in production.
+Testing Edge Cases:
+
+Develop thorough unit tests and integration tests that cover various edge cases to catch issues early in development.
+Deployment Considerations:
+
+Consider deployment-specific edge cases, such as load balancing, containerization, and scaling, to ensure your server behaves as expected in a production environment.
+Graceful Shutdown:
+
+Implement a graceful shutdown mechanism to allow your server to finish ongoing requests and clean up resources when it's time to stop the application.

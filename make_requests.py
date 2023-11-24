@@ -25,7 +25,7 @@ def make_requests(url, num_requests):
 
 if __name__ == "__main__":
     # URL of your Flask `/intent` endpoint
-    url = 'http://localhost:8080/intent'  # Adjust the port if different
+    url = 'http://localhost:8090/intent'  # Adjust the port if different
 
     # Number of requests to make
     num_requests = 100
