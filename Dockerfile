@@ -31,4 +31,4 @@ RUN pip install flasgger==0.9.7.1
 COPY . .
 
 # Set the default command to run the application with python
-CMD ["python", "server.py", "--model", "IntentClassifierLSTMWithAttention", "--port", "8080"]
+CMD ["python", "aap/server.py", "--model", "IntentClassifierLSTMWithAttention", "--port", "8080"]
