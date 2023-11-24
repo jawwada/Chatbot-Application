@@ -36,7 +36,7 @@ Start Prometheus using the configuration file where you specified your Flask app
 ```bash
 prometheus --config.file=prometheus.yml
 ```
-
+```
 Example logs maintained in logs/flask-logs.log
 2023-11-24 00:55:21,985 - server_full - ERROR - Server encountered an internal error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 2023-11-24 00:56:26,057 - server_full - INFO - Loading model.IntentClassifierLSTMWithAttention
@@ -50,8 +50,8 @@ Example logs maintained in logs/flask-logs.log
 2023-11-24 00:58:34,544 - server_full - INFO - User entry: find me a flight to miami
 2023-11-24 00:58:34,544 - server_full - INFO - Predicted intent: [{'label': 'flight', 'confidence': 0.9681052565574646}, {'label': 'flight_time', 'confidence': 0.006745603866875172}, {'label': 'airport', 'confidence': 0.0047215186059474945}]
 2023-11-24 01:06:49,831 - server_full - INFO - User entry: set an alarm for 7 AM
-
-install filebeat and configure it to send logs to elk server or splunk server
+```
+to send thses logs to splunk or elk, install filebeat and configure it to send logs to elk server or splunk server
 
 
 3. Run Grafana
