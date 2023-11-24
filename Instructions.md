@@ -87,35 +87,45 @@ process could be assume below:
 ## Project Structure
 The project is structured as follows:
 ```bash
-sensor_fault_detection
-├── config
-│   ├── log_config.py
-├── data
-│   ├── historical_sensor_data.csb
-│   ├── latest_sensor_data.csv
-├── models
-│   ├── model.joblib
-├── notebooks
-│   ├── model.ipynb
-├── src
-│   ├── app
-│   │   ├── app.py
-│   ├── request
-│   │   ├── request.py
-│   ├── init.py       
-│   ├── main.py
-│   ├── machine_learning
-│   │   ├── inference.py
-│   │   ├── model.py
-│   │   ├── data_preprocessing.py
-├── tests
-│   ├── test_data_preprocessing.py
-│   ├── test_model_training.py
+.
 ├── Dockerfile
+├── Instructions.md
+├── Instructions_backup.md
 ├── README.md
+├── app
+│   ├── make_requests.py
+│   └── server.py
+├── config
+│   ├── config_bert.py
+│   ├── log_handler.py
+│   └── model_initialization
+│       └── IntentClassifierLSTMWithAttention.json
+├── docker-compose.yml
+├── machine_learning
+│   ├── learners
+│   │   ├── IntentClassifierLSTM.py
+│   │   ├── IntentClassifierLSTMWithAttention.py
+│   │   ├── IntentTokenizer.py
+│   │   ├── intent_classifier.py
+│   │   ├── model_utils.py
+│   │   └── utils.py
+│   ├── notebooks
+│   │   ├── 1. Model Training.ipynb
+│   │   ├── 2. Hyperparameter Optimization.ipynb
+│   │   ├── 3. Model Evaluation.ipynb
+│   │   ├── 4. Model Abstraction, Transformers .ipynb
+│   │   ├── plot_parallel_coordinate.png
+│   │   └── plotly_contours.png
+│   └── pipelines
+│       ├── evaluation_pipeline.py
+│       ├── hyperparameter_optimization_pipeline.py
+│       └── training_pipeline.py
+├── main.py
+├── prometheus.yml
 ├── requirements.txt
-├── .gitignore
-├── sensor_fault_detection.yaml
+└── tests
+    ├── conftest.py
+    └── test_flask.py
 ```
 ## Project Components
 
@@ -138,11 +148,9 @@ The project folder has the following structure:
     - **data_preprocessing.py**: Contains the code for preprocessing the data.
 - **tests**: Contains the unit tests for the flask server. Integration tests not implementd.
 - **Dockerfile**: Contains the Dockerfile for the project.
-- **Documentation.md**: Contains the project overview and setup instructions.
+- **Instructions.md**: Contains the project overview and setup instructions.
 - **requirements.txt**: Contains the required packages for the project.
 - **prometheus.yaml**: contains the prometheus configuration.
 
 The project has logging for the main model building and inference tasks implemented using the Python logging module. The logs are stored in the `logs` directory which is created once the main script is run.
-TODO: Add logging to the Flask server. Can be done using the Flask logging module.
-TODO: Add logging to the unit tests. Can be done using the pytest logging module.
 

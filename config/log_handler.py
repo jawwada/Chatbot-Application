@@ -3,7 +3,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 
-log_file_path = '../logs/flask-logs.log'
+log_file_path = 'logs/flask-logs.log'
 log_level = logging.INFO
 log_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
