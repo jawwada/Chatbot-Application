@@ -132,8 +132,18 @@ def objective(trial):
             print(f'Fold: {fold + 1}, Training Loss: {fold_loss:.4f}, Validation Accuracy: {val_accuracy:.4f}')
             fold_val_acc.append(val_accuracy)
         average_val_acc = sum(fold_val_acc) / len(fold_val_acc)
+
+        # Log metrics
+        mlflow.log_metric("train_loss", fold_loss)
+        print(f'Foldloss: {fold_loss:.4f}')
+        mlflow.log_metric("accuracy", average_val_acc)
         print(f'Average validation accuracy: {average_val_acc:.4f}')
-        log_metrics(trial, average_val_acc)
+        test_accuracy = evaluate(model, nn.CrossEntropyLoss(), test_loader, data_type="Test")
+        print(f'Test Accuracy: {test_accuracy:.4f}')
+        mlflow.log_metric("test_accuracy", test_accuracy)
+        mlflow.pytorch.log_model(model, f"best_model_{study.study_name}")
+        if test_accuracy>0.97:
+            mlflow.pytorch.log_model(model, f"best_model_{study.study_name}_test_accuracy_{test_accuracy}")
     return average_val_acc
 
 
