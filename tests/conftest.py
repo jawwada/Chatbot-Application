@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 import pytest
-from server import app as flask_app, db
+from app.server import app as flask_app, db
 
 @pytest.fixture
 def app():

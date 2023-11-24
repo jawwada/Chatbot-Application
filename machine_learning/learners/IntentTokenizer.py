@@ -6,9 +6,9 @@ import torch
 from sklearn.preprocessing import LabelEncoder
 from torch.utils.data import TensorDataset
 
-from utils import build_vocabulary
-from utils import convert_and_pad_sequences
-from utils import text_to_indices
+from machine_learning.learners.utils import build_vocabulary
+from machine_learning.learners.utils import convert_and_pad_sequences
+from machine_learning.learners.utils import text_to_indices
 
 
 class IntentTokenizer:

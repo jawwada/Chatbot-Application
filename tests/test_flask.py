@@ -1,4 +1,4 @@
-from server import IntentRequest, IntentLog, db
+from app.server import IntentRequest, db
 
 def test_invalid_request(client):
     response = client.post('/intent', json={})

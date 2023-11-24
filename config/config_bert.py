@@ -15,8 +15,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else
 # Instantiate the model
 
 
-train_file = 'data/atis/train.tsv'
-test_file = 'data/atis/test.tsv'
+train_file = 'data/input/atis/train.tsv'
+test_file = 'data/input/atis/test.tsv'
 
 # Load data
 train = pd.read_csv(train_file, sep='\t', header=None)

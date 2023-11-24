@@ -45,21 +45,21 @@ from sklearn.model_selection import KFold
 from torch.utils.data import DataLoader
 
 # project imports
-from machine_learning.IntentClassifierLSTMWithAttention import IntentClassifierLSTMWithAttention
-from machine_learning.IntentTokenizer import IntentTokenizer
-from machine_learning.model_utils import evaluate
-from machine_learning.model_utils import get_or_create_experiment
-from machine_learning.model_utils import train
-from machine_learning.model_utils import log_hyperparameters
-from machine_learning.model_utils import log_metrics
+from machine_learning.learners.IntentClassifierLSTMWithAttention import IntentClassifierLSTMWithAttention
+from machine_learning.learners.IntentTokenizer import IntentTokenizer
+from machine_learning.learners.model_utils import evaluate
+from machine_learning.learners.model_utils import get_or_create_experiment
+from machine_learning.learners.model_utils import train
+from machine_learning.learners.model_utils import log_hyperparameters
+from machine_learning.learners.model_utils import log_metrics
 
 # Suppress warnings and set verbosity
 warnings.filterwarnings("ignore", category=UserWarning, message=".*setuptools.*")
 optuna.logging.set_verbosity(optuna.logging.ERROR)
 
 # Load data
-train_df = pd.read_csv('data/atis/train.tsv', sep='\t', header=None, names=["text", "label"])
-test_df = pd.read_csv('data/atis/test.tsv', sep='\t', header=None, names=["text", "label"])
+train_df = pd.read_csv('data/input/atis/train.tsv', sep='\t', header=None, names=["text", "label"])
+test_df = pd.read_csv('data/input/atis/test.tsv', sep='\t', header=None, names=["text", "label"])
 
 # Instantiate the tokenizer
 tokenizer = IntentTokenizer(train_df)
@@ -148,7 +148,7 @@ model_class_name = "IntentClassifierLSTMWithAttention"
 experiment_id = get_or_create_experiment(model_class_name)
 
 mlflow.set_experiment(experiment_id=experiment_id)
-storage = optuna.storages.RDBStorage(url=f"sqlite:///{model_class_name}.db")
+storage = optuna.storages.RDBStorage(url=f"sqlite:///data/db/{model_class_name}.db")
 study = optuna.create_study(storage=storage, direction="maximize")
 
 study.study_name = model_class_name
