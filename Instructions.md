@@ -111,13 +111,13 @@ process could be assumed below:
 
 
 ## Project Structure
-The project is structured as follows:
+The project is structured as follows: TODO: Repo Refactoring with better code organization in master Brnach
 ```bash
 ├── 1. Model Training.ipynb
 ├── 2. Hyperparameter Optimization.ipynb
 ├── 3. Model Evaluation.ipynb
 ├── 4. Model Abstraction, Transformers .ipynb
-├── :db
+├── :db #Optuna
 ├── Dockerfile
 ├── Instructions.md
 ├── README.md
@@ -130,8 +130,8 @@ The project is structured as follows:
 │   │   ├── ood_test.tsv
 │   │   ├── test.tsv
 │   │   └── train.tsv
-│   ├── lock
-│   └── queries.active
+│   ├── lock # Request Response db
+│   └── queries.active # Request Response db
 ├── docker-compose.yml
 ├── intent_classifier.py
 ├── log_handler.py
@@ -146,7 +146,7 @@ The project is structured as follows:
 ├── main.py
 ├── make_requests.py
 ├── model_state_dict.pth
-├── models
+├── models # Model store for reproducibility
 │   ├── E-LSTMAmodel.pth
 │   ├── IntentClassifierLSTMWithAttention.pth
 │   ├── IntentClassifierLSTMWithAttention_le.pickle
@@ -161,21 +161,21 @@ The project is structured as follows:
 │   ├── best_ICELSTMAmodel_le.pickle
 │   ├── best_ICELSTMAmodel_ood.pth
 │   └── best_ICELSTMAmodel_tokenizer.pickle
-├── plot_parallel_coordinate.png
-├── plotly_contours.png
-├── prometheus.yml
+├── plot_parallel_coordinate.png #Hyper parameter space visualization
+├── plotly_contours.png #Hyper parameter space visualization
+├── prometheus.yml 
 ├── requirements.txt
-├── screenshots
+├── screenshots #Screenshots for different apps working, for more see master branch, which is work in progress
 │   ├── Request_response_Database.png
 │   ├── Swagger.png
 │   ├── grafana.png
 │   ├── prometheus-metrics-collector.png
 │   └── prometheus_data_collection.png
 ├── server.py
-├── tests
+├── tests #unit tests for some functionality
 │   ├── conftest.py
 │   └── test_flask.py
-└── utils.py
+└── utils.py #some utilities
 ```
 ## Project Components
 
