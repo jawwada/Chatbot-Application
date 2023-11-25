@@ -97,13 +97,25 @@ in the project root directory, run:
 prometheus --config.file=prometheus.yml
 ```
 
+
 now prometheus is running on localhost:9090 and grafana on localhost:3000. You can login to grafana with admin/admin.
 You can write a dashboard from the project root directory. TODO: Write a dashboard in file "grafana_dashboard.json". The application is exposing some metrics on the endpoint /metrics. You will see the metrics on the dashboard. 
+
+### 4. Optuna and mlflow (Distributed Hyperparameter optimization and Experiment tracking, ML pipelines, Model management and deployment)
+pip install optuna mlflow opuna-dashboard
+mlflow server --backend-store-uri=mlruns --default-artifact-root=file:mlruns --host 0.0.0.0 --port 1234
+optuna-dashboard sqlite:///IntentClassifierLSTMWithAttention.db
+Both of them are production ready scalable toole for distributed trainina, experimenting and model management. I have done a local setup but the backend can easily be databases/ blob stores in cloud. For their operation, I can show in a meeting or see some screen shots.
+
+
 Logging done for flask. Requests and responses are stored in SQLite DB in instance directory. This can be any DB over the network/cloud as well.  The text logs are stored in the `logs` directory which is created once the server script is run.
+
+
+
 
 TODO: logging for the main model building and inference tasks implemented using the Python logging module. 
 
-TODO: pip install optuna-dashboard. 
+
 
 ## CI/CD Pipeline
 The CI/CD pipeline's basic component docker is implemented. Creating webhooks for automatic build and deployment to a deployment tool akin to kubernetes is not done. 
