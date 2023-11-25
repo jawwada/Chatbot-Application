@@ -101,6 +101,7 @@ Logging done for flask. Requests and responses are stored in SQLite DB in instan
 
 TODO: logging for the main model building and inference tasks implemented using the Python logging module. 
 
+TODO: pip install optuna-dashboard. 
 
 ## CI/CD Pipeline
 The CI/CD pipeline's basic component docker is implemented. Creating webhooks for automatic build and deployment to a deployment tool akin to kubernetes is not done. 
