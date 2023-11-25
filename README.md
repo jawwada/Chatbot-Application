@@ -2,7 +2,7 @@
 
 ## Intent Classification
 This project is a showcase for end-to-end machine learning development process.
-I built a Deep NN NLP model of decent performance (97.5% accuracy on test data in some tests), 
+It has a deep neural networks based nlp model(97.5% accuracy on test data in some tests), 
 docker-based Flask web server, enabling request handling and server interaction 
 and put in practise AI engineering at a different levels of maturity.
 I tried to explain the process in the notebooks, and I believe from there on one can see how the missing pieces will fit in.
