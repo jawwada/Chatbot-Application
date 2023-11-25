@@ -1,7 +1,5 @@
 # Intent Classification
-An AI challenge to showcase the end-to-end machine learning development process. 
-First time from data to deployment is not the most difficult, it is creating a flexible architecture to monitor the performance 
-and upgrade the model in production with little time and effort.
+This project is a showcase for end-to-end machine learning development process.
 I built a Deep NN NLP model of decent performance (97% accuracy on test data in some tests), 
 docker-based Flask web server, enabling request handling and server interaction.
 and put in practise AI engineering at a different level of maturity.
