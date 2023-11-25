@@ -126,8 +126,8 @@ The project is structured as follows: TODO: Repo Refactoring with better code or
 ├── config_bert.py
 ├── data
 │   ├── atis
-│   │   ├── ood.tsv
-│   │   ├── ood_test.tsv
+│   │   ├── ood.tsv #out of sample data train
+│   │   ├── ood_test.tsv #out of sample data test
 │   │   ├── test.tsv
 │   │   └── train.tsv
 │   ├── lock # Request Response db
@@ -144,8 +144,8 @@ The project is structured as follows: TODO: Repo Refactoring with better code or
 │   ├── main_example.py
 │   └── model_utils.py
 ├── main.py
-├── make_requests.py
-├── model_state_dict.pth
+├── make_requests.py #Make 100 requests to the server, a loop to check latency
+├── model_state_dict.pth #state dict of the model
 ├── models # Model store for reproducibility
 │   ├── E-LSTMAmodel.pth
 │   ├── IntentClassifierLSTMWithAttention.pth
