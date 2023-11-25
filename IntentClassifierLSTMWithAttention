@@ -1,0 +1,1 @@
+{"vocab_size": 891, "embedding_dim": 256, "hidden_dim": 512, "output_dim": 23, "dropout_rate": 0.2}

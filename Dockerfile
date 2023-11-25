@@ -26,9 +26,12 @@ RUN pip install --upgrade cython numpy==1.26.2
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 RUN pip install flasgger==0.9.7.1
+RUN pip install Flask-SQLAlchemy==3.1.1
+
 # Copy the rest of the application code, this is done last to avoid running requirements.txt on every code change
 
 COPY . .
-
+RUN mkdir /app/logs
+RUN touch /app/logs/flask-logs.log
 # Set the default command to run the application with python
 CMD ["python", "server.py", "--model", "IntentClassifierLSTMWithAttention", "--port", "8080"]
