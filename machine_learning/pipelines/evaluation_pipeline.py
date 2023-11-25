@@ -22,7 +22,7 @@ worrying about the training and evaluation process. You can also easily switch b
 
 import pandas as pd
 import torch
-from machine_learning.learners.IntentTokenizer import IntentTokenizer
+from machine_learning.pipelines.data_loaders import test_df,tokenizer
 from machine_learning.learners.model_utils import predict
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
 import numpy as np
@@ -36,10 +36,6 @@ model_name = "IntentClassifierLSTMWithAttention"
 
 
 model_serve = torch.load(f"data/models/{model_name}.pth").to(device)
-tokenizer = tokenizer = IntentTokenizer.load_state(IntentTokenizer,
-                                                   f"data/models/IntentClassifierLSTMWithAttention_tokenizer.pickle",
-                                                   f"data/models/IntentClassifierLSTMWithAttention_le.pickle")
-test_df = pd.read_csv('data/input/atis/test.tsv', sep='\t', header=None, names=["text", "label"])
 
 # compute metrics like accuracy, precision, recall, F1 score
 # Accuracy

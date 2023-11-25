@@ -25,30 +25,7 @@ import torch.nn as nn
 from machine_learning.learners.IntentTokenizer import IntentTokenizer
 from machine_learning.learners.IntentClassifierLSTMWithAttention import IntentClassifierLSTMWithAttention
 from machine_learning.learners.model_utils import train, evaluate, predict
-from torch.utils.data import DataLoader
-
-# Set device
-device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
-print(f"Using device: {device}")
-
-# Load and preprocess the data
-train_df = pd.read_csv('data/input/atis/train.tsv', sep='\t', header=None, names=["text", "label"])
-test_df = pd.read_csv('data/input/atis/test.tsv', sep='\t', header=None, names=["text", "label"])
-tokenizer = IntentTokenizer(train_df)
-tokenizer.save_state("data/models/IntentClassifierLSTMWithAttention_le_example.pickle'", "data/models/IntentClassifierLSTMWithAttention_le_example.pickle")
-
-# Example usage
-train_data = tokenizer.process_data(train_df,device=device)
-test_data = tokenizer.process_data(test_df,device=device)
-print("Number of training samples:", train_data.tensors[0].size())
-print("Number of test samples:", test_data.tensors[0].size())
-
-# Create DataLoaders
-batch_size = 32
-train_loader = DataLoader(train_data, shuffle=True, batch_size=batch_size)
-test_loader = DataLoader(test_data, shuffle=True, batch_size=batch_size)
-print("Number of training batches:", len(train_loader))
-print("Number of test batches:", len(test_loader))
+from machine_learning.pipelines.data_loaders import train_loader, test_loader, tokenizer, device
 
 # Define loss function and optimizer
 loss_function = nn.CrossEntropyLoss()
@@ -89,7 +66,6 @@ torch.save(model.to(torch.device("cpu")),f"data/models/{model_name}.pth")
 tokenizer.save_state(f"data/models/{model_name}_tokenizer.pickle", f"data/models/{model_name}_le.pickle")
 
 # Serve the model
-device=torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 model_serve = torch.load(f"data/models/{model_name}.pth").to(device)
 
 

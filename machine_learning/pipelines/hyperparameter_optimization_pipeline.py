@@ -46,45 +46,19 @@ from torch.utils.data import DataLoader
 
 # project imports
 from machine_learning.learners.IntentClassifierLSTMWithAttention import IntentClassifierLSTMWithAttention
-from machine_learning.learners.IntentTokenizer import IntentTokenizer
 from machine_learning.learners.model_utils import evaluate
 from machine_learning.learners.model_utils import get_or_create_experiment
 from machine_learning.learners.model_utils import train
 from machine_learning.learners.model_utils import log_hyperparameters
-from machine_learning.learners.model_utils import log_metrics
 
 # Suppress warnings and set verbosity
 warnings.filterwarnings("ignore", category=UserWarning, message=".*setuptools.*")
 optuna.logging.set_verbosity(optuna.logging.ERROR)
 
 # Load data
-train_df = pd.read_csv('data/input/atis/train.tsv', sep='\t', header=None, names=["text", "label"])
-test_df = pd.read_csv('data/input/atis/test.tsv', sep='\t', header=None, names=["text", "label"])
+from machine_learning.pipelines.data_loaders import train_loader, test_loader, tokenizer, train_df, batch_size
+from machine_learning.pipelines.data_loaders import num_epochs, device, output_dim, vocab_size
 
-# Instantiate the tokenizer
-tokenizer = IntentTokenizer(train_df)
-
-# define constants and hyperparameters
-vocab_size = tokenizer.max_vocab_size
-output_dim = len(tokenizer.le.classes_)
-batch_size = 32
-num_epochs = 10
-
-#   Define device
-device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
-print(f"Using device: {device}")
-
-# tokenize and process train and test data and create dataLoaders
-
-train_data = tokenizer.process_data(train_df, device=device)
-train_loader = DataLoader(train_data, shuffle=True, batch_size=batch_size)
-print("Number of training samples:", train_data.tensors[0].size())
-print("Number of training batches:", len(train_loader))
-
-test_data = tokenizer.process_data(test_df, device=device)
-print("Number of test samples:", test_data.tensors[0].size())
-test_loader = DataLoader(test_data, shuffle=True, batch_size=batch_size)
-print("Number of test batches:", len(test_loader))
 
 
 def objective(trial):
@@ -144,7 +118,11 @@ def objective(trial):
         mlflow.pytorch.log_model(model, f"best_model_{study.study_name}")
         if test_accuracy>0.97:
             mlflow.pytorch.log_model(model, f"best_model_{study.study_name}_test_accuracy_{test_accuracy}")
-    return average_val_acc
+            class_name = model.__class__.__name__
+            print(f"class_name={class_name}")
+            model.save_config_file(f"config/model_initialization/{class_name}.json")
+            torch.save(model.state_dict(), f"data/models/{class_name}_state_dict.pth")
+    return test_accuracy
 
 
 if __name__ == "__main__":
@@ -159,10 +137,10 @@ experiment_id = get_or_create_experiment(model_class_name)
 
 mlflow.set_experiment(experiment_id=experiment_id)
 storage = optuna.storages.RDBStorage(url=f"sqlite:///data/db/{model_class_name}.db")
-study = optuna.create_study(storage=storage, direction="maximize")
+study = optuna.create_study(study_name = f"model_class_name_test" ,storage=storage, direction="maximize", load_if_exists=True)
 
-study.study_name = model_class_name
-study.optimize(objective, n_trials=2)
+
+study.optimize(objective, n_trials=20)
 best_trial = study.best_trial
 
 with mlflow.start_run(experiment_id=experiment_id):

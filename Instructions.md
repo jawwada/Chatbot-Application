@@ -45,13 +45,6 @@ python machine_learning/pipelines/hyperparameter_optimization_pipelines.py
 python machine_learning/pipelines/evaluation_pipeline.py
 ```
 
-## Alternative Setups
-### 1. Local Setup
-
-Running the main script:
-```bash
-python src/main.py
-```
 Running the tests:
 ```bash
 pytest
@@ -130,9 +123,13 @@ The project is structured as follows:
 ## Project Components
 
 The project folder has the following structure:
+- **Dockerfile**: Contains the Dockerfile for the project.
+- **Instructions.md**: Contains the project overview and setup instructions.
+- **requirements.txt**: Contains the required packages for the project.
+- **prometheus.yaml**: contains the prometheus configuration.
 - **config**: Contains the configuration files for the project. Configuration files for application, e.g. logging, and model initialization JSON files for loading at runtime
 - **data**: Contains the most of the learning data, blobs, database, trained model state dictionaries, and results.
-= Contains the source code for the project.
+- **docker-compose.yml**: Contains the docker-compose file for the project.
 - **app**: Contains the Flask web server for handling requests.
   - **make_requests.py**: the script for making requests to the Flask server.
   - **server.py**: Contains the server script for the flask.
@@ -146,11 +143,18 @@ The project folder has the following structure:
     - **inference.py**: Contains the code for making inferences using the trained model.
     - **model.py**: Contains the code for training the model.
     - **data_preprocessing.py**: Contains the code for preprocessing the data.
-- **tests**: Contains the unit tests for the flask server. Integration tests not implementd.
-- **Dockerfile**: Contains the Dockerfile for the project.
-- **Instructions.md**: Contains the project overview and setup instructions.
-- **requirements.txt**: Contains the required packages for the project.
-- **prometheus.yaml**: contains the prometheus configuration.
+
 
 The project has logging for the main model building and inference tasks implemented using the Python logging module. The logs are stored in the `logs` directory which is created once the main script is run.
 
+
+**Important Note:**
+Whenever there is an error for project path or module not found, please set the PYTHONPATH to the project root directory
+```
+export PYTHONPATH="${PYTHONPATH}:$(pwd)"
+```
+***
+
+**Improvements:**
+1. Many free parameters and fixed values are used in the code, which can be moved to the json config files.
+2. 
