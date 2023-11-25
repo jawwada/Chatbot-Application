@@ -96,7 +96,7 @@ prometheus --config.file=prometheus.yml
 ```
 
 now prometheus is running on localhost:9090 and grafana on localhost:3000. You can login to grafana with admin/admin.
-You can write a dashboard from the project root directory. The dashboard is in the file "grafana_dashboard.json". The application is exposing some metrics on the endpoint /metrics. You can see the metrics on the dashboard.
+You can write a dashboard from the project root directory. TODO: Write a dashboard in file "grafana_dashboard.json". The application is exposing some metrics on the endpoint /metrics. You will see the metrics on the dashboard. 
 
 The project has logging for the main model building and inference tasks implemented using the Python logging module. The logs are stored in the `logs` directory which is created once the main script is run.
 
