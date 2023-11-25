@@ -111,7 +111,9 @@ optuna-dashboard sqlite:///IntentClassifierLSTMWithAttention.db
 It witt be a good idea to start mlflow before running the notebooks.
 mlflow server --backend-store-uri=mlruns --default-artifact-root=file:mlruns --host 0.0.0.0 --port 1234
 
-I have added a screen shot for mlflow server for the experiments run. The models are also stored in mlflow, with all the git requirements and parameters for the model. I can probably show the tooling working for the example in next meeting. E.g. see the contours plot from optuna study run by me.
+I have added a screen shot for mlflow server for the experiments run. The models are also stored in mlflow, with all the git requirements and parameters for the model. I can probably show the tooling working for the example in next meeting. 
+
+Optuna gives a really nice idea of what combinations of hyperparameters otpimize the objective function. The following pictures show the contours of decision surface of my study for the training of ELSTM-Attention network for Intent classification on atis data. 
 ![plotly contours for optuna training](plotly_contours.png)
 
 
