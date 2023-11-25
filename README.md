@@ -109,7 +109,7 @@ optuna-dashboard sqlite:///IntentClassifierLSTMWithAttention.db
 ```
 Both of them are production ready scalable toole for distributed trainina, experimenting and model management. I have done a local setup but the backend can easily be databases/ blob stores in cloud. For their operation, I can show in a meeting or see some screen shots. The following image shows the contours of the decision surface for ELST-Attention model corresponding its hyper parameters used to train it.
 
-![contours plot for model hyper parameters](plotly_contours.jpg)
+![contours plot hyper parameters](plotly_contours.png)
 
 
 Logging done for flask. Requests and responses are stored in SQLite DB in instance directory. This can be any DB over the network/cloud as well.  The text logs are stored in the `logs` directory which is created once the server script is run.
