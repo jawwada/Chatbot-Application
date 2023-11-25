@@ -183,31 +183,25 @@ The project folder has the following structure:
 - **Instructions.md**: Contains the project overview and setup instructions.
 - **requirements.txt**: Contains the required packages for the project.
 - **prometheus.yaml**: contains the prometheus configuration.
-- **config**: Contains the configuration files for the project. Configuration files for application, e.g. logging, and model initialization JSON files for loading at runtime
-- **data**: Contains the most of the learning data, blobs, database, trained model state dictionaries, and results.
+- **config**: Contains some of the configuration files for the project. TODO: Configuration files for application, e.g. logging, and model initialization JSON files for loading at runtime
+- **data**: Contains input data. TODO: refactor, so that the most of the learning data, blobs, database, trained model state dictionaries, and results are here and ignore for git.
 - **docker-compose.yml**: Contains the docker-compose file for the project.
-- **app**: Contains the Flask web server for handling requests.
+- TODO: **app**: Contains the Flask web server for handling requests.
   - **make_requests.py**: the script for making requests to the Flask server.
   - **server.py**: Contains the server script for the flask.
-- **machine_learning**: Contains the machine learning code for the project.
-    - **IntentClassifierLSTM.py**: Contains the code for the LSTM model.
-    - **IntentClassifierLSTMWithAttention.py**: Contains the code for the LSTM with Attention model.
-    - **IntentTokenizer.py**: Contains the code for the tokenizer.
-    - **compute_metric.py**: Contains the code for computing the metrics.
-    - **hyperparameter_optimization.py**: Contains the code for hyperparameter optimization.
-    - **main_example.py**: Contains the code for training first model.
-    - **model_utils.py**: Contains the code for the model utilities.
-Contain the Jupyter notebooks used for model training. Tell the main story, have fun
-- 1.Model Training.ipynb => This notebook contains the training of the basic models, LSTM and LSTM with Attention.
-  - 2. Hyperparameter Optimization.ipynb => This notebook contains the hyperparameter optimization of the LSTM with Attention model 
-  - 3. Model Evaluation.ipynb => This notebook contains the evaluation of the LSTM with Attention model , and strategies to improve the model 
-  - 4. Model Abstraction, Transformers .ipynb => This notebook contains the abstraction of the model to a transformer model 
-  - **pipelines**
-    - **inference.py**: Contains the code for making inferences using the trained model.
-    - **model.py**: Contains the code for training the model.
-    - **data_preprocessing.py**: Contains the code for preprocessing the data.
-
-
+  - **machine_learning**: Contains the machine learning code for the project. TODO: refactor, see example in master branch.
+      - **IntentClassifierLSTM.py**: Contains the code for the LSTM model.
+      - **IntentClassifierLSTMWithAttention.py**: Contains the code for the LSTM with Attention model.
+      - **IntentTokenizer.py**: Contains the code for the tokenizer.
+      - **compute_metric.py**: Contains the code for computing the metrics.
+      - **hyperparameter_optimization.py**: Contains the code for hyperparameter optimization.
+      - **main_example.py**: Contains the code for training first model.
+      - **model_utils.py**: Contains the code for the model utilities.
+  Contain the Jupyter notebooks used for model training. Notebooks are numbered in the order of execution. and tell the story of the project.
+  - 1.Model Training.ipynb => This notebook contains the training of the basic models, LSTM and LSTM with Attention.
+  - 2.Hyperparameter Optimization.ipynb => This notebook contains the hyperparameter optimization of the LSTM with Attention model 
+  - 3.Model Evaluation.ipynb => This notebook contains the evaluation of the LSTM with Attention model , and strategies to improve the model 
+  - 4.Model Abstraction, Transformers .ipynb => This notebook contains the abstraction of the model to a transformer model 
 
 **Important Note:**
 Whenever there is an error for project path or module not found, please set the PYTHONPATH to the project root directory
