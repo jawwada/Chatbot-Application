@@ -73,7 +73,7 @@ python server.py --model=IntentClassifierLSTMWithAttention --port=8080
 ```
 you can make requests by running python make_request.py or by using swagger on localhost:8080/apidocs
 ```bash
-python app/make_requests.py
+python make_requests.py
 ```
 
 ### 2. Docker Setup
