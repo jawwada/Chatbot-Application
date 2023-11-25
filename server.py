@@ -124,7 +124,7 @@ def intent():
         parameters:
           - name: text
             in: body
-            description: Text to classify intent.
+            description: Text to classify intent. Format {"text": "find me a flight to miami"}
             required: true
             schema:
               type: string
