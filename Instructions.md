@@ -103,7 +103,7 @@ TODO: logging for the main model building and inference tasks implemented using 
 
 
 ## CI/CD Pipeline
-The CI/CD pipeline's most tiny and basic component docker is implemented. Creating webhooks for automatic build and deployment to a deployment tool akin to kubernetes is not done. 
+The CI/CD pipeline's basic component docker is implemented. Creating webhooks for automatic build and deployment to a deployment tool akin to kubernetes is not done. 
 process could be assumed below:
 1. Create a new tag in git repo. Configure a webhook
 2. Pipeline will be triggered, build the docker image and push the docker image to a container registry
