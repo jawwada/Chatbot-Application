@@ -86,7 +86,7 @@ docker run -p 8080:8080 ultimate-a:ic-1.0
 ```
 
 ### 3. Prometheus and Grafana Setup
-## install prometheus and grafana, you can check metrics. To run the project with Prometheus and Grafana:
+install prometheus and grafana, you can check metrics. To run the project with Prometheus and Grafana:
 ```bash
 brew install prometheus
 brew install grafana
