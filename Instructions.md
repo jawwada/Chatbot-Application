@@ -111,8 +111,8 @@ optuna-dashboard sqlite:///IntentClassifierLSTMWithAttention.db
 It witt be a good idea to start mlflow before running the notebooks.
 mlflow server --backend-store-uri=mlruns --default-artifact-root=file:mlruns --host 0.0.0.0 --port 1234
 
-I have added a screen shot for mlflow server for the experiments run. The models are also stored in mlflow, with all the git requirements and parameters for the model. I can probably show the tooling working for the example in next meeting.
-
+I have added a screen shot for mlflow server for the experiments run. The models are also stored in mlflow, with all the git requirements and parameters for the model. I can probably show the tooling working for the example in next meeting. E.g. see the contours plot from optuna study run by me.
+![plotly contours for optuna training](plotly_contours.png)
 
 
 Logging done for flask. Requests and responses are stored in SQLite DB in instance directory. This can be any DB over the network/cloud as well.  The text logs are stored in the `logs` directory which is created once the server script is run.
