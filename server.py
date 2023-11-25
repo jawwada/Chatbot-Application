@@ -124,7 +124,7 @@ def intent():
         parameters:
           - name: text
             in: body
-            description: Text to classify intent. Format {"text": "find me a flight to miami"}
+            description: Text to classify intent. 
             required: true
             schema:
               type: string
@@ -184,7 +184,7 @@ def intent():
     except BadRequest:
         REQUEST_COUNT.labels('POST', '/intent', '400').inc()
         app.logger.error('Invalid JSON format.')
-        return jsonify({"label": "BAD_REQUEST", "message": "Invalid JSON format."}), 400
+        return jsonify({"label": "BAD_REQUEST", "message": "Invalid JSON format. Format {"text" : "Your text here"}"}), 400
 
 @app.errorhandler(500)
 def internal_error(error):
