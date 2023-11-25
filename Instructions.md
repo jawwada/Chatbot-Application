@@ -97,8 +97,9 @@ prometheus --config.file=prometheus.yml
 
 now prometheus is running on localhost:9090 and grafana on localhost:3000. You can login to grafana with admin/admin.
 You can write a dashboard from the project root directory. TODO: Write a dashboard in file "grafana_dashboard.json". The application is exposing some metrics on the endpoint /metrics. You will see the metrics on the dashboard. 
+Logging done for flask. Requests and responses are stored in SQLite DB in instance directory. This can be any DB over the network/cloud as well.  The text logs are stored in the `logs` directory which is created once the server script is run.
 
-The project has logging for the main model building and inference tasks implemented using the Python logging module. The logs are stored in the `logs` directory which is created once the main script is run.
+TODO: logging for the main model building and inference tasks implemented using the Python logging module. 
 
 
 ## CI/CD Pipeline
