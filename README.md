@@ -58,6 +58,7 @@ Install the required packages:
 ```bash
 pip install -r requirements.txt
 pip install Flask-SQLAlchemy==3.1.1
+pip install flasgger==0.9.7.1
 ```
 TODO: include Flask-SQLAlchemy inside the requirements.txt and remove version conflict.
 
@@ -141,20 +142,24 @@ You can write a dashboard from the project root directory. TODO: Write a dashboa
 ```bash
 pip install optuna mlflow opuna-dashboard
 mlflow server --backend-store-uri=mlruns --default-artifact-root=file:mlruns --host 0.0.0.0 --port 1234
-optuna-dashboard sqlite:///IntentClassifierLSTMWithAttention.db
+╰─ optuna-dashboard sqlite:///IntentClassifierLSTMWithAttention.db --port 9034
 ```
+optuna dashboard is running at http://localhost:9043
+I have already a database for the study I coducted. You can visit the dashboard and explore studies.
 
 If you have run some experiments, and running the same ports, you can visit mlflow server at
 ```
 http://127.0.0.1:1234/
 ```
 
+
 You will see mlflow server with some experiments, you can configure the dash board to view hyperparamters. And also check model logging and charts, it has a lot of facitlities. I have logged my experiments and here is a view of my mlflow server. Because the mlruns directory for mlflow server stores a lot of model information and charts, I am not making it a part of github, otherwise my git repo will become too huge, which is already quite big because I am shipping a few blobs with it.
 ![MLFlow](/screenshots/Mlflow-Server.png)
 
-Both of them are production ready scalable toole for distributed trainina, experimenting and model management. I have done a local setup but the backend can easily be databases/ blob stores in cloud. For their operation, I can show in a meeting or see some screen shots. The following image shows the contours of the decision surface for ELST-Attention model corresponding its hyper parameters used to train it.
+Both of them are production ready scalable toole for distributed training, experimenting and model management. I have done a local setup but the backend can easily be databases/ blob stores in cloud. For their operation, I can show in a meeting or see some screen shots. The following image shows the contours of the decision surface for ELST-Attention model corresponding its hyper parameters used to train it.
 
 ![contours plot hyper parameters](plotly_contours.png)
+
 
 
 Logging done for flask. Requests and responses are stored in SQLite DB in instance directory. This can be any DB over the network/cloud as well.  The text logs are stored in the `logs` directory which is created once the server script is run.
