@@ -10,6 +10,7 @@ from intent_classifier import IntentClassifier
 from log_handler import file_handler, log_level
 from prometheus_flask_exporter import PrometheusMetrics, Counter, Histogram
 from flask_sqlalchemy import SQLAlchemy
+import json
 
 
 app = Flask(__name__)
@@ -184,7 +185,12 @@ def intent():
     except BadRequest:
         REQUEST_COUNT.labels('POST', '/intent', '400').inc()
         app.logger.error('Invalid JSON format.')
-        return jsonify({"label": "BAD_REQUEST", "message": "Invalid JSON format. Format {"text" : "Your text here"}"}), 400
+        # Define the format as a dictionary
+        format_example = {"text": "Your text here"}
+        format_string = json.dumps(format_example)  
+        format_string = format_string.replace('\"', '"')
+        # Serialize the dictionary to a JSON-formatted string
+        return jsonify({"label": "BAD_REQUEST", "message": f"Invalid JSON format."}), 400
 
 @app.errorhandler(500)
 def internal_error(error):
