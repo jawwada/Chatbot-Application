@@ -144,7 +144,7 @@ pip install optuna mlflow optuna-dashboard
 mlflow server --backend-store-uri=mlruns --default-artifact-root=file:mlruns --host 0.0.0.0 --port 1234
 ╰─ optuna-dashboard sqlite:///IntentClassifierLSTMWithAttention.db --port 9034
 ```
-optuna dashboard is running at http://localhost:9043
+optuna dashboard is running at http://localhost:9034
 I have already a database for the study I coducted. You can visit the dashboard and explore studies.
 
 If you have run some experiments, and running the same ports, you can visit mlflow server at
