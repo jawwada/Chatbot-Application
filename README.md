@@ -97,6 +97,7 @@ python make_requests.py
 mlflow server --backend-store-uri=mlruns --default-artifact-root=file:mlruns --host 0.0.0.0 --port 1234
 2. There are three examples of pipelines in the machine_learning folder that you can run
 ```
+export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 python machine_learning/main_example.py
 python machine_learning/hyperparameter_optimization.py
 python machine_learning/compute_metric.py
