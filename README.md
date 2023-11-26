@@ -57,8 +57,8 @@ Install the required packages:
 
 ```bash
 pip install -r requirements.txt
-pip install Flask-SQLAlchemy==3.1.1
 pip install flasgger==0.9.7.1
+pip install Flask-SQLAlchemy==3.1.1
 ```
 TODO: include Flask-SQLAlchemy inside the requirements.txt and remove version conflict.
 
