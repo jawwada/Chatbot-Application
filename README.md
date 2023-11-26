@@ -140,7 +140,7 @@ You can write a dashboard from the project root directory. TODO: Write a dashboa
 ### 4. Optuna and mlflow 
 (Distributed Hyperparameter optimization and Experiment tracking, ML pipelines, Model management and deployment)
 ```bash
-pip install optuna mlflow opuna-dashboard
+pip install optuna mlflow optuna-dashboard
 mlflow server --backend-store-uri=mlruns --default-artifact-root=file:mlruns --host 0.0.0.0 --port 1234
 ╰─ optuna-dashboard sqlite:///IntentClassifierLSTMWithAttention.db --port 9034
 ```
