@@ -49,34 +49,60 @@ export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 ```
 
 Create a new project environment with python 3.9 or 3.9.10
+```
 conda create -n py39 python=3.9
-
+conda activate py39
+```
 Install the required packages:
 
 ```bash
 pip install -r requirements.txt
+pip install Flask-SQLAlchemy==3.1.1
 ```
-
-Running the pipeline script:
-```bash
-python machine_learning/training_pipeline.py
-python machine_learning/hyperparameter_optimization_pipelines.py
-python machine_learning/evaluation_pipeline.py
-```
+TODO: include Flask-SQLAlchemy inside the requirements.txt and remove version conflict.
 
 Running the tests:
 ```bash
 pytest
 ```
 
-Running the Flask server:
+### Running the Flask server and :
 ```bash
 python server.py --model=IntentClassifierLSTMWithAttention --port=8080
 ```
-you can make requests by running python make_request.py or by using swagger on localhost:8080/apidocs
+
+### Making Requests
+you can visit localhost
+```
+http://localhost:8080/apidocs
+```
+and make requests through swagger interface. Your requests should have proper
+json format to get a prediction from intent classification example.
+e.g. 
+{"text":"find me a flight from chicago to washington"}
+
+![swagger prediction](/screenshots/swagger-prediction.png)
+
+you can also check edge cases and errors
+
+![swagger error](/screenshots/swagger-integer.png)
+you can also make requests by running python make_request.py
 ```bash
 python make_requests.py
 ```
+
+### Running Experiments/ Python Execution Scripts
+1. The experiments require that you have mlflow server running in the backend.
+mlflow server --backend-store-uri=mlruns --default-artifact-root=file:mlruns --host 0.0.0.0 --port 1234
+2. There are three examples of pipelines in the machine_learning folder that you can run
+```
+python machine_learning/main_example.py
+python machine_learning/hyperparameter_optimization.py
+python machine_learning/compute_metric.py
+```
+
+3. For notebooks, start the jupyter server in the project root and run all cells of the jupyter notebooks. The Jupyter notebooks are numbered via their names. The order of execution shall be kept to avoid overwriting some models. But for experimentation, they should run independently as well.
+
 
 ### 2. Docker Setup
 To build and run the project using Docker:
@@ -96,9 +122,18 @@ in the project root directory, run:
 ```bash
 prometheus --config.file=prometheus.yml
 ```
-
+You can configure in yaml, how often you want server to be scraped for the metrics defined in server.py
 
 now prometheus is running on localhost:9090 and grafana on localhost:3000. You can login to grafana with admin/admin.
+I have implemented two metrics in the flask file.  REQUEST_COUNT and REQUEST_LATENCY. You can easily configure prometheus to get those metrics. They will help you in maintaining server health. Other metrics can also be defined. Similarly Grafan can be configured to get those metric.
+![Prometheus](/screenshots/prometheus-metrics-collector.png)
+Prometheus metrics collection log can also be checked
+![Prometheus-log](/screenshots/prometheus_data_collection.png)
+
+Similary a grafana dash board can be configured to run with prometheus.
+![Grafana](/screenshots/grafana.png)
+
+
 You can write a dashboard from the project root directory. TODO: Write a dashboard in file "grafana_dashboard.json". The application is exposing some metrics on the endpoint /metrics. You will see the metrics on the dashboard. 
 
 ### 4. Optuna and mlflow 
@@ -108,6 +143,15 @@ pip install optuna mlflow opuna-dashboard
 mlflow server --backend-store-uri=mlruns --default-artifact-root=file:mlruns --host 0.0.0.0 --port 1234
 optuna-dashboard sqlite:///IntentClassifierLSTMWithAttention.db
 ```
+
+If you have run some experiments, and running the same ports, you can visit mlflow server at
+```
+http://127.0.0.1:1234/
+```
+
+You will see mlflow server with some experiments, you can configure the dash board to view hyperparamters. And also check model logging and charts, it has a lot of facitlities. I have logged my experiments and here is a view of my mlflow server. Because the mlruns directory for mlflow server stores a lot of model information and charts, I am not making it a part of github, otherwise my git repo will become too huge, which is already quite big because I am shipping a few blobs with it.
+![MLFlow](/screenshots/Mlflow-Server.png)
+
 Both of them are production ready scalable toole for distributed trainina, experimenting and model management. I have done a local setup but the backend can easily be databases/ blob stores in cloud. For their operation, I can show in a meeting or see some screen shots. The following image shows the contours of the decision surface for ELST-Attention model corresponding its hyper parameters used to train it.
 
 ![contours plot hyper parameters](plotly_contours.png)
@@ -115,12 +159,7 @@ Both of them are production ready scalable toole for distributed trainina, exper
 
 Logging done for flask. Requests and responses are stored in SQLite DB in instance directory. This can be any DB over the network/cloud as well.  The text logs are stored in the `logs` directory which is created once the server script is run.
 
-
-
-
 TODO: logging for the main model building and inference tasks implemented using the Python logging module. 
-
-
 
 ## CI/CD Pipeline
 The CI/CD pipeline's basic component docker is implemented. Creating webhooks for automatic build and deployment to a deployment tool akin to kubernetes is not done. 
