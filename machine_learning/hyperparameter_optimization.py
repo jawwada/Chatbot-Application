@@ -68,7 +68,7 @@ tokenizer = IntentTokenizer(train_df)
 vocab_size = tokenizer.max_vocab_size
 output_dim = len(tokenizer.le.classes_)
 batch_size = 32
-num_epochs = 10
+num_epochs = 5
 
 #   Define device
 device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
@@ -152,7 +152,7 @@ storage = optuna.storages.RDBStorage(url=f"sqlite:///{model_class_name}.db")
 study = optuna.create_study(storage=storage, direction="maximize")
 
 study.study_name = model_class_name
-study.optimize(objective, n_trials=2)
+study.optimize(objective, n_trials=5)
 best_trial = study.best_trial
 
 with mlflow.start_run(experiment_id=experiment_id):
@@ -190,4 +190,10 @@ fig = optuna.visualization.plot_optimization_history(study)
 fig.show()
 
 fig = optuna.visualization.plot_parallel_coordinate(study)
+fig.show()
+
+fig = optuna.visualization.plot_contour(study)
+fig.show()
+
+fig = optuna.visualization.plot_slice(study)
 fig.show()
