@@ -186,10 +186,6 @@ def intent():
         REQUEST_COUNT.labels('POST', '/intent', '400').inc()
         app.logger.error('Invalid JSON format.')
         # Define the format as a dictionary
-        format_example = {"text": "Your text here"}
-        format_string = json.dumps(format_example)  
-        format_string = format_string.replace('\"', '"')
-        # Serialize the dictionary to a JSON-formatted string
         return jsonify({"label": "BAD_REQUEST", "message": f"Invalid JSON format."}), 400
 
 @app.errorhandler(500)
