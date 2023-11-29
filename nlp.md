@@ -704,43 +704,68 @@ Transformation to Q, K, V: Each word's embedding is transformed into three diffe
 Query: Represents the current word you are focusing on.
 Key: Represents all the words you want to draw information from (often the same set as the query).
 Value: Contains the actual information of each word that you want to aggregate.
-Simple Example with Matrices:
-Imagine a simple case where we have a sentence with two words: "Thinking machines". We first convert these words into embeddings and then into Q, K, V vectors.
 
-Word Embeddings (for simplicity, assume 2-dimensional embeddings):
+**Example Sentence:**
+Consider the sentence: "Data is powerful". We'll simplify it to two words for this example: "Data" and "Powerful".
 
-Thinking: [1, 0]
-Machines: [0, 1]
-Transformation Matrices (again, for simplicity, 2x2 matrices):
+Embeddings:
+Assume we have pre-trained embeddings (3-dimensional for simplicity) for these words:
 
-Q matrix: [[1, 0], [0, 1]]
-K matrix: [[1, 0], [0, 1]]
-V matrix: [[1, 0], [0, 1]]
-Transformed Q, K, V Vectors:
+Embedding for "Data": [1, 2, 3]
+Embedding for "Powerful": [2, 3, 1]
+Transformation Matrices:
+We have separate transformation matrices (3x3) for queries (Q), keys (K), and values (V):
 
-For "Thinking":
-Q: [1, 0] (obtained by multiplying embedding with Q matrix)
-K: [1, 0]
-V: [1, 0]
-For "Machines":
-Q: [0, 1]
-K: [0, 1]
-V: [0, 1]
+Q Matrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+
+K Matrix: [[0, 1, 0], [1, 0, 0], [0, 0, 1]]
+
+V Matrix: [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+
+These matrices are learned during the training process. Here, we use simple matrices for illustration.
+
+Transform to Q, K, V:
+For "Data":
+
+Q(Data) = [1, 2, 3] * Q Matrix = [1, 2, 3]
+
+K(Data) = [1, 2, 3] * K Matrix = [2, 1, 3]
+
+V(Data) = [1, 2, 3] * V Matrix = [1, 2, 3]
+
+For "Powerful":
+
+Q(Powerful) = [2, 3, 1] * Q Matrix = [2, 3, 1]
+
+K(Powerful) = [2, 3, 1] * K Matrix = [3, 2, 1]
+
+V(Powerful) = [2, 3, 1] * V Matrix = [2, 3, 1]
+
 Computing Attention:
-Attention Scores: Calculate the dot product of the query vector with all the key vectors. For example, the attention score for "Thinking" attending to "Machines" would be the dot product of Q(Thinking) and K(Machines), which is [1, 0] ⋅ [0, 1] = 0.
+Calculate Attention Scores:
 
-Scale and Normalize: Scale the attention scores (typically by the square root of the dimension of key vectors) and apply a softmax to normalize them.
+Score for "Data" attending to "Powerful" = Dot Product of Q(Data) and K(Powerful) = [1, 2, 3] ⋅ [3, 2, 1] = 1*3 + 2*2 + 3*1 = 10
 
-Weighted Sum: Multiply each value vector by the softmax scores (attention weights) and sum them up. This gives you a weighted representation of the sentence based on the current word's perspective.
+Score for "Powerful" attending to "Data" = Dot Product of Q(Powerful) and K(Data) = [2, 3, 1] ⋅ [2, 1, 3] = 2*2 + 3*1 + 1*3 = 10
 
-Pedantic Explanation:
-Query: Think of it as asking a question about the current word or token.
-Key: These are the aspects of other tokens that you compare the query against. 
+Scale and Normalize Scores (assuming no scaling for simplicity):
 
-It's like finding how much each token should contribute to answering the query's question.
-Value: Once you know which tokens are important (from the attention scores), the value vectors provide the actual content from those tokens that you want to focus on.
+Apply softmax to the scores. If these are the only two words, each word attends equally to the other, so the softmax scores might both be 0.5 (for simplicity).
+Compute Weighted Sum of Values:
+
+For "Data": The new representation = 0.5 * V(Data) + 0.5 * V(Powerful) = [0.5, 1, 1.5] + [1, 1.5, 0.5] = [1.5, 2.5, 2]
+
+For "Powerful": Similar calculation.
+
+Explanation:
+Q (Query): Represents the word in focus. In this example, it's used to find out how much each word should pay attention to other words.
+
+K (Key): Represents the words from which information is drawn.
+
+V (Value): Provides the actual content from each word. Once we know which words are important (from the attention scores), we aggregate this content.
 
 Conclusion:
+
 In attention mechanisms, Q, K, and V vectors allow the model to dynamically focus on different parts of the input sentence based on the context. 
 
 They are essential for models to capture complex dependencies and relationships in the data, which is crucial in tasks like language understanding and generation. 
