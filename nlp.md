@@ -200,6 +200,99 @@ Machine Translation: In a translation task, the encoder reads the input sentence
 Image Autoencoder: For an image autoencoder, the encoder compresses the image into a lower-dimensional representation, and the decoder reconstructs the image from this representation. The reconstructed image is usually compared to the original image to minimize reconstruction error.
 Conclusion
 Encoders and decoders are integral to various complex architectures in deep learning and NLP. They serve complementary roles – encoders for compressing or encoding information, and decoders for expanding or reconstructing information. In autoencoders, both are used in tandem to learn efficient data representations and for tasks like denoising or unsupervised learning.
+et's consider an example of an autoencoder in PyTorch. An autoencoder is composed of an encoder and a decoder. The encoder compresses the input data into a lower-dimensional representation, and the decoder reconstructs the data back from this compressed representation. We will use a simple dataset like the MNIST dataset of handwritten digits for this example.
+
+Dataset: MNIST
+The MNIST dataset consists of 28x28 pixel grayscale images of handwritten digits (0 through 9).
+
+Autoencoder Architecture
+Our autoencoder will have:
+
+An Encoder: Compresses the 28x28 images into a lower-dimensional latent space.
+A Decoder: Reconstructs the images from the latent space representation.
+```python
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader
+
+# Define the Autoencoder
+class Autoencoder(nn.Module):
+    def __init__(self):
+        super(Autoencoder, self).__init__()
+        # Encoder
+        self.encoder = nn.Sequential(
+            nn.Linear(28 * 28, 128),
+            nn.ReLU(),
+            nn.Linear(128, 64),
+            nn.ReLU(),
+            nn.Linear(64, 12),
+            nn.ReLU(),
+            nn.Linear(12, 3)  # Compressed representation
+        )
+        # Decoder
+        self.decoder = nn.Sequential(
+            nn.Linear(3, 12),
+            nn.ReLU(),
+            nn.Linear(12, 64),
+            nn.ReLU(),
+            nn.Linear(64, 128),
+            nn.ReLU(),
+            nn.Linear(128, 28 * 28),
+            nn.Sigmoid()  # Using Sigmoid because the output values are between 0 and 1
+        )
+
+    def forward(self, x):
+        x = self.encoder(x)
+        x = self.decoder(x)
+        return x
+
+# Load the MNIST dataset
+transform = transforms.Compose([
+    transforms.ToTensor(),
+    transforms.Normalize((0.5,), (0.5,))
+])
+
+train_dataset = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
+train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+
+# Initialize the model, loss function, and optimizer
+model = Autoencoder()
+criterion = nn.MSELoss()
+optimizer = optim.Adam(model.parameters(), lr=1e-3)
+
+# Training Loop
+num_epochs = 5
+for epoch in range(num_epochs):
+    for data in train_loader:
+        img, _ = data
+        img = img.view(img.size(0), -1)
+        output = model(img)
+        loss = criterion(output, img)
+
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+    print(f'Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}')
+
+print("Training Complete")
+
+```
+latent space. The decoder then reconstructs the image back to 784 dimensions.
+Dataset and DataLoader: We use the MNIST dataset, transform the images to tensors, and normalize them. The DataLoader provides batches of images for training.
+Loss Function: We use Mean Squared Error (MSE) loss, which measures the reconstruction error between the output and the original image.
+Training Loop: For each epoch, we pass the images through the autoencoder to get the reconstructed images, calculate the loss, and update the model's weights.
+Output
+After training, the model should have learned to compress and reconstruct the MNIST images. The loss value printed at each epoch represents how well the model is reconstructing the images - lower values indicate better reconstruction.
+you can visualize the reconstructed images using matplotlib:
+```python
+import matplotlib.pyplot as plt
+
+```python
+
+
 
 ### BERT (Bidirectional Encoder Representations from Transformers) is a Transformer-based machine learning technique for natural language processing (NLP) pre-training developed by Google. BERT was created and published in 2018 by Jacob Devlin and his colleagues from Google. As of 2019, Google has been leveraging BERT to better understand user searches. BERT is a method of pre-training language representations, meaning that we train a general-purpose "language understanding" model on a large text corpus (like Wikipedia), and then use that model for downstream NLP tasks that we care about (like question answering). BERT outperforms previous methods because it is the first unsupervised, deeply bidirectional system for pre-training NLP.
 **Key Components of BERT's Architecture:**
