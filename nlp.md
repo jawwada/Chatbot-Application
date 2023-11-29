@@ -546,18 +546,31 @@ The encoder-decoder architecture is a neural network design pattern commonly use
 
 Recursive neural networks (RecNNs) are a class of neural networks that can operate on structured input data, such as sequences, trees, and graphs. They are often used in natural language processing (NLP) for tasks like sentiment analysis and text classification.
 **Recursive Neural Networks**
-RNNs are a class of neural networks that can operate on structured input data, such as sequences, trees, and graphs. They are often used in natural language processing (NLP) for tasks like sentiment analysis and text classification.
-RNNs simply recursively apply the same operation to each element in a sequence, using the output from the previous element as an input to the current element. This allows the model to capture information from previous elements and use it to process the current element.
+RNNs are a class of neural networks that can operate on structured input data, such as sequences, trees, and graphs. 
+They are often used in natural language processing (NLP) for tasks like sentiment analysis and text classification.
+RNNs simply recursively apply the same operation to each element in a sequence, using the output from the previous element as an input to the current element. 
+This allows the model to capture information from previous elements and use it to process the current element.
 They roll up the information of the previous elements and use it to process the current element. This allows the model to capture information from previous elements and use it to process the current element.
-Firstly, RNN can be redesigned in a one-to-many model for language generation or music generation. Secondly, many-to-one models can be used for text classification or sentiment analysis. And lastly, many-to-many models are used for NER problems.
-The second use of many-to-many models is to solve encoder-decoder problems such as machine translation, question answering, and text summarization. As with other neural network models, RNN models take tokens produced by a tokenization algorithm that breaks down the entire raw text into atomic units also called tokens. Further, it associates the token units with numeric vectors—token embeddings—which are learned during the training. As an alternative, we can assign the embedded learning task to the well-known word-embedding algorithms such as Word2vec or FastText in advance.
+
+
+Firstly, RNN can be redesigned in a one-to-many model for language generation or music generation. 
+Secondly, many-to-one models can be used for text classification or sentiment analysis. 
+
+And lastly, many-to-many models are used for NER problems.
+
+The second use of many-to-many models is to solve encoder-decoder problems such as machine translation, question answering, and text summarization. 
+As with other neural network models, RNN models take tokens produced by a tokenization algorithm that breaks down the entire raw text into atomic units also called tokens. 
+Further, it associates the token units with numeric vectors—token embeddings—which are learned during the training. As an alternative, we can assign the embedded learning task to the well-known word-embedding algorithms such as Word2vec or FastText in advance.
+
 The following are some advantages of an RNN architecture: Variable-length input: The capacity to work on variable-length input, no matter the size of the sentence being input. We can feed the network with sentences of 3 or 300 words without changing the parameter. Caring about word order: It processes the sequence word by word in order, caring about the word position.  Suitable for working in various modes (many-to-many, one-to-many): We
+
 Disadvantages: Long-term dependency problem: When we process a very long document and try to link the terms that are far from each other, we need to care about and encode all irrelevant other terms between these terms. Prone to exploding or vanishing gradient problems: When working on long documents, updating the weights of the very first words is a big deal, which makes a model untrainable due to a vanishing gradient problem. Hard to apply parallelizable training: Parallelization breaks the main problem down into a smaller problem and executes the solutions at the same time, but RNN follows a classic sequential approach. Each layer strongly depends on previous layers, which makes parallelization impossible. The computation is slow as the sequence is long: An RNN could be very efficient for short text problems. It processes longer documents very slowly, besides the long-term dependency problem.
 
 **LSTM and GRU**
 
-LSTMs and gated recurrent units LSTM (Schmidhuber, 1997) and Gated Recurrent Units (GRUs) (Cho, 2014) are new variants of RNNs, 
+LSTMs and gated recurrent units new variants of RNNs, 
 have solved long-term dependency problems, and have attracted great attention. 
+
 LSTMs were particularly developed to cope with the long-term dependency problem. 
 The advantage of an LSTM model is that it uses the additional cell state, which is a horizontal sequence line on the top of the LSTM unit. 
 This cell state is controlled by special purpose gates for forget, insert, or update operations.
