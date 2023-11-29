@@ -290,7 +290,7 @@ you can visualize the reconstructed images using matplotlib:
 ```python
 import matplotlib.pyplot as plt
 
-```python
+```
 
 
 
