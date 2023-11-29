@@ -534,7 +534,6 @@ def plotWords3D(vecs, words, title):
 
 plotWords3D(words3d, words, "Visualizing Word2vec Word Embeddings using PCA")
 ```
-\
 **GloVe**, another widely used and popular model, argued that count-based models can be better than neural models. 
 It leverages both global and local statistics of a corpus to learn embeddings based on word-word co-occurrence statistics. 
 It performed well on some syntactic and semantic tasks, as shown in the following screenshot. 
@@ -544,7 +543,26 @@ man and woman (man-> woman). Then, we can arithmetically estimate the vector of 
 the term actor and the offset calculated before. Likewise, we can learn syntactic relations such as word plural forms. 
 For instance, if the vectors of Actor, Actors, and Actress are given, we can estimate the vector of Actresses.
 
+### Idea of subword tokenization
+The Word2vec-like models learn word embeddings by employing a prediction-based neural architecture. 
+They employ gradient descent on some objective functions and nearby word predictions. 
+While traditional approaches apply a count-based method, neural models design a prediction-based architecture for distributional semantics. 
+Are count-based methods or prediction-based methods the best for distributional word representations?
+The GloVe approach addressed this problem and argued that these two approaches are not dramatically different. 
+Jeffrey Penington et al. even supported the idea that the count-based methods could be more successful by capturing global statistics. 
+They stated that GloVe outperformed other neural network language models on word analogy, word similarity, and Named Entity Recognition (NER) tasks. 
+These two paradigms, however, did not provide a helpful solution for **unseen words and word-sense problems. 
+They do not exploit subword information, and therefore cannot learn the embeddings of rare and unseen words.**
+
+FastText, another widely used model, proposed a new enriched approach using subword information, 
+where each word is represented as a bag of character n-grams. The model sets a constant vector to each character n-gram and 
+represents words as the sum of their sub-vectors, which is an idea that was first introduced by Hinrich Schütze (Word Space, 1993). 
+The model can compute word representations even for unseen words and learn the internal structure of words such as suffixes/affixes, 
+which is especially important with morphologically rich languages such as Finnish, Hungarian, Turkish, Mongolian, Korean, Japanese, Indonesian, and so forth. 
+Currently, **modern Transformer architectures use a variety of subword tokenization methods such as WordPiece, SentencePiece, or Byte-Pair Encoding**
+
 **ELMo**, a deep contextualized word representation model, was the first model to introduce the concept of contextual word embeddings.
 It was a deep bidirectional language model that was trained on a large corpus of text. 
 ****
+
 
