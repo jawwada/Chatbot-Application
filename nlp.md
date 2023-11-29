@@ -563,6 +563,141 @@ Currently, **modern Transformer architectures use a variety of subword tokenizat
 
 **ELMo**, a deep contextualized word representation model, was the first model to introduce the concept of contextual word embeddings.
 It was a deep bidirectional language model that was trained on a large corpus of text. 
+
 ****
+****
+
+**Sequence to Sequence Models**
+sequence-to-sequence (seq2seq) models, which are a class of models that can learn to convert one sequence into another sequence.
+Seq2seq models are used in a variety of tasks, such as machine translation, text summarization, and image captioning.
+Seq2seq models are based on the encoder-decoder architecture, which is composed of two subnetworks: an encoder and a decoder.
+The encoder takes an input sequence and encodes it into a fixed-length vector representation. The decoder then takes this vector representation and decodes it into a new sequence.
+Encoder
+An encoder is a component or model that transforms data from a high-dimensional space to a lower-dimensional space. In the context of machine learning and NLP:
+Decoder
+A decoder, conversely, takes the output from an encoder (or any condensed representation) and expands or reconstructs it back to a higher-dimensional space or into a different format.
+Encoder-Decoder Architecture
+The encoder-decoder architecture is a neural network design pattern commonly used in natural language processing (NLP) for tasks like machine translation. It involves two subnetworks: an encoder and a decoder. The encoder takes an input sequence and encodes it into a fixed-length vector representation. The decoder then takes this vector representation and decodes it into a new sequence.
+
+
+
+**Recursive Architectures**
+
+Recursive neural networks (RecNNs) are a class of neural networks that can operate on structured input data, such as sequences, trees, and graphs. They are often used in natural language processing (NLP) for tasks like sentiment analysis and text classification.
+**Recursive Neural Networks**
+RNNs are a class of neural networks that can operate on structured input data, such as sequences, trees, and graphs. They are often used in natural language processing (NLP) for tasks like sentiment analysis and text classification.
+RNNs simply recursively apply the same operation to each element in a sequence, using the output from the previous element as an input to the current element. This allows the model to capture information from previous elements and use it to process the current element.
+They roll up the information of the previous elements and use it to process the current element. This allows the model to capture information from previous elements and use it to process the current element.
+Firstly, RNN can be redesigned in a one-to-many model for language generation or music generation. Secondly, many-to-one models can be used for text classification or sentiment analysis. And lastly, many-to-many models are used for NER problems.
+The second use of many-to-many models is to solve encoder-decoder problems such as machine translation, question answering, and text summarization. As with other neural network models, RNN models take tokens produced by a tokenization algorithm that breaks down the entire raw text into atomic units also called tokens. Further, it associates the token units with numeric vectors—token embeddings—which are learned during the training. As an alternative, we can assign the embedded learning task to the well-known word-embedding algorithms such as Word2vec or FastText in advance.
+The following are some advantages of an RNN architecture: Variable-length input: The capacity to work on variable-length input, no matter the size of the sentence being input. We can feed the network with sentences of 3 or 300 words without changing the parameter. Caring about word order: It processes the sequence word by word in order, caring about the word position.  Suitable for working in various modes (many-to-many, one-to-many): We
+Disadvantages: Long-term dependency problem: When we process a very long document and try to link the terms that are far from each other, we need to care about and encode all irrelevant other terms between these terms. Prone to exploding or vanishing gradient problems: When working on long documents, updating the weights of the very first words is a big deal, which makes a model untrainable due to a vanishing gradient problem. Hard to apply parallelizable training: Parallelization breaks the main problem down into a smaller problem and executes the solutions at the same time, but RNN follows a classic sequential approach. Each layer strongly depends on previous layers, which makes parallelization impossible. The computation is slow as the sequence is long: An RNN could be very efficient for short text problems. It processes longer documents very slowly, besides the long-term dependency problem.
+
+**LSTM and GRU**
+
+LSTMs and gated recurrent units LSTM (Schmidhuber, 1997) and Gated Recurrent Units (GRUs) (Cho, 2014) are new variants of RNNs, 
+have solved long-term dependency problems, and have attracted great attention. 
+LSTMs were particularly developed to cope with the long-term dependency problem. 
+The advantage of an LSTM model is that it uses the additional cell state, which is a horizontal sequence line on the top of the LSTM unit. 
+This cell state is controlled by special purpose gates for forget, insert, or update operations.
+
+It is able to decide the following: What kind of information we will store in the cell state Which information will be forgotten or deleted In the original RNN, in order to learn the state of I tokens, it recurrently processes the entire state of previous tokens between timestep0 and timestepi-1. Carrying entire information from earlier timesteps leads to vanishing gradient problems, which makes the model untrainable. The gate mechanism in LSTM allows the architecture to skip some unrelated tokens at a certain timestep or remember long-range states in order to learn the current token state. A GRU is similar to an LSTM in many ways, the main difference being that a GRU does not use the cell state. Rather, the architecture is simplified by transferring the functionality of the cell state to the hidden state, and it only includes two gates: an update gate and a reset gate. The update gate determines how much information from the previous and current timesteps will be pushed forward. This feature helps the model keep relevant information from the past, which minimizes the risk of a vanishing gradient problem as well. The reset gate detects the irrelevant data and makes the model forget it. A gentle implementation
+
+**CNNs**
+CNNs, after their success in computer vision, were ported to NLP in terms of modeling sentences or tasks such as semantic text classification. A CNN is composed of convolution layers followed by a dense neural network in many practices. A convolution layer performs over the data in order to extract useful features. As with any DL model, a convolution layer plays the feature extraction role to automate feature extraction.
+
+**Encoder Decoder Examples**
+in an encoder-decoder architecture, you can use LSTM (Long Short-Term Memory) units for both the encoder and the decoder. 
+This setup is quite common, especially in sequence-to-sequence tasks like machine translation, where the LSTM's ability to handle long-term dependencies is beneficial.
+```
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# Define the Encoder
+class EncoderLSTM(nn.Module):
+    def __init__(self, input_size, hidden_size):
+        super(EncoderLSTM, self).__init__()
+        self.hidden_size = hidden_size
+        self.lstm = nn.LSTM(input_size, hidden_size)
+
+    def forward(self, input_seq, hidden):
+        output, hidden = self.lstm(input_seq.view(1, 1, -1), hidden)
+        return output, hidden
+
+    def init_hidden(self):
+        return (torch.zeros(1, 1, self.hidden_size),
+                torch.zeros(1, 1, self.hidden_size))
+
+# Define the Decoder
+class DecoderLSTM(nn.Module):
+    def __init__(self, hidden_size, output_size):
+        super(DecoderLSTM, self).__init__()
+        self.hidden_size = hidden_size
+        self.lstm = nn.LSTM(hidden_size, hidden_size)
+        self.out = nn.Linear(hidden_size, output_size)
+        self.softmax = nn.LogSoftmax(dim=1)
+
+    def forward(self, input_seq, hidden):
+        output, hidden = self.lstm(input_seq.view(1, 1, -1), hidden)
+        output = self.softmax(self.out(output[0]))
+        return output, hidden
+
+# Example parameters
+input_size = 10  # Size of the input vector (e.g., embedding size)
+hidden_size = 256  # Size of the hidden state of the LSTM
+output_size = 10  # Size of the output vector (e.g., size of the vocabulary)
+
+# Create the encoder and decoder models
+encoder = EncoderLSTM(input_size, hidden_size)
+decoder = DecoderLSTM(hidden_size, output_size)
+# Example input (one-hot encoded vectors for simplicity)
+seq_length = 5  # Length of the input sequence
+input_seq = torch.rand(seq_length, input_size)  # Random input sequence
+
+# Initialize the hidden state of the encoder
+encoder_hidden = encoder.init_hidden()
+
+# Pass each input token through the encoder
+for i in range(seq_length):
+    encoder_output, encoder_hidden = encoder(input_seq[i], encoder_hidden)
+
+# Now use the final encoder hidden state to initialize the decoder
+decoder_input = torch.tensor([[0]])  # SOS token (start of sequence token)
+decoder_hidden = encoder_hidden
+
+# Generate output sequence (here, we'll generate a fixed length sequence for simplicity)
+output_length = 5
+for i in range(output_length):
+    decoder_output, decoder_hidden = decoder(decoder_input, decoder_hidden)
+    decoder_input = decoder_output.argmax(dim=1)  # Use the most probable next token as the next input
+
+```
+Context vector dependence is the main problem of the encoder-decoder architecture. What is context vector dependence?
+
+Understanding Context Vector Dependence:
+Encoder's Role: In a typical seq2seq model, the encoder processes the input sequence and generates a context vector. This vector is meant to capture the entire semantic essence of the input.
+
+Fixed-Size Representation: Regardless of the length or complexity of the input sequence, the encoder outputs a context vector of a fixed size. This is akin to compressing the information, which can lead to loss of detail, particularly for longer sequences.
+
+Decoder's Challenge: The decoder, which is responsible for generating the output sequence (like the translated sentence in a different language), relies solely on this context vector. It doesn't have access to the input sequence itself, only to the representation provided by the context vector.
+
+Information Bottleneck: This reliance creates an information bottleneck. The context vector may not adequately convey all the nuances, especially subtle ones, of the input sequence. As a result, the decoder might struggle to accurately reconstruct or translate the sequence, particularly as the length of the input increases.
+
+**Attention Mechanism**
+the main problem of an RNN-based encoder-decoder model is that it produces a single fixed representation for a sequence.
+However, the attention mechanism allowed the RNN to focus on certain parts of the input tokens as it maps them to a certain part of the output tokens. 
+This attention mechanism has been found to be useful and has become one of the underlying ideas of the Transformer architecture.
+
+**Self Attention:**
+This mechanism uses an input matrix shown as X and produces an attention score between various items in X.
+We see X as a 3x4 matrix where 3 represents the number of tokens and 4 presents the embedding size. 
+Q from Figure 1.15 is also known as the query, K is known as the key, and V is noted as the value. 
+Three types of matrices shown as theta, phi, and g are multiplied by X before producing Q, K, and V. 
+The multiplied result between query (Q) and key (K) yields an attention score matrix. 
+This can also be seen as a database where we use the query and keys in order to find out how much various items are related in terms of numeric evaluation. 
+Multiplication of the attention score and the V matrix produces the final result of this type of attention mechanism. 
+The main reason for it being called self-attention is because of its unified input X; Q, K, and V are computed from X.
+
 
 
