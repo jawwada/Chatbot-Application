@@ -570,12 +570,27 @@ Disadvantages: Long-term dependency problem: When we process a very long documen
 
 LSTMs and gated recurrent units new variants of RNNs, 
 have solved long-term dependency problems, and have attracted great attention. 
-
 LSTMs were particularly developed to cope with the long-term dependency problem. 
+
 The advantage of an LSTM model is that it uses the additional cell state, which is a horizontal sequence line on the top of the LSTM unit. 
 This cell state is controlled by special purpose gates for forget, insert, or update operations.
 
-It is able to decide the following: What kind of information we will store in the cell state Which information will be forgotten or deleted In the original RNN, in order to learn the state of I tokens, it recurrently processes the entire state of previous tokens between timestep0 and timestepi-1. Carrying entire information from earlier timesteps leads to vanishing gradient problems, which makes the model untrainable. The gate mechanism in LSTM allows the architecture to skip some unrelated tokens at a certain timestep or remember long-range states in order to learn the current token state. A GRU is similar to an LSTM in many ways, the main difference being that a GRU does not use the cell state. Rather, the architecture is simplified by transferring the functionality of the cell state to the hidden state, and it only includes two gates: an update gate and a reset gate. The update gate determines how much information from the previous and current timesteps will be pushed forward. This feature helps the model keep relevant information from the past, which minimizes the risk of a vanishing gradient problem as well. The reset gate detects the irrelevant data and makes the model forget it. A gentle implementation
+It is able to decide the following: What kind of information we will store in the cell state Which information will be forgotten or deleted.
+
+In the original RNN, in order to learn the state of Input tokens, it recurrently processes the entire state of previous tokens between timestep0 and timestepi-1. 
+
+Carrying entire information from earlier timesteps leads to vanishing gradient problems, which makes the model untrainable. 
+
+The gate mechanism in LSTM allows the architecture to skip some unrelated tokens at a certain timestep or remember long-range states in order to learn the current token state. 
+
+A GRU is similar to an LSTM in many ways, the main difference being that a GRU does not use the cell state. 
+Rather, the architecture is simplified by transferring the functionality of the cell state to the hidden state, 
+and it only includes two gates: an update gate and a reset gate. 
+The update gate determines how much information from the previous and current timesteps will be pushed forward. 
+
+This feature helps the model keep relevant information from the past, which minimizes the risk of a vanishing gradient problem as well. 
+The reset gate detects the irrelevant data and makes the model forget it.
+**LSTM and GRUs help long term dependency problem though having an overseer pass that looks at the entire sequence and gates that help vanishing gradient **
 
 **CNNs**
 CNNs, after their success in computer vision, were ported to NLP in terms of modeling sentences or tasks such as semantic text classification. A CNN is composed of convolution layers followed by a dense neural network in many practices. A convolution layer performs over the data in order to extract useful features. As with any DL model, a convolution layer plays the feature extraction role to automate feature extraction.
