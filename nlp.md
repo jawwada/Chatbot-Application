@@ -788,3 +788,51 @@ Output:
 
 The final layer's output can be used for various NLP tasks. The [CLS] token's representation, in particular, is often used in classification tasks as it contains the aggregate information of the entire sequence.
 
+
+###  Working with transformers
+
+Several approaches have been proposed to reduce computational complexity and memory footprint.
+Some of these approaches focus on changing the architecture and some do not alter the original architecture 
+but instead make improvements to the trained model or to the training phase. 
+
+We will divide them into two groups, model size reduction and efficient self-attention. 
+
+Model size reduction can be accomplished using three different approaches: 
+
+1. Knowledge distillation 
+2. Pruning 
+3. Quantization 
+  
+Each of these three has its own way of reducing the size model, which we will describe in short in the Implementation for model size reduction section. 
+
+In knowledge distillation, a smaller transformer (student) can transfer the knowledge of a big model (teacher). 
+We train the student model so that it can mimic the teacher's behavior or produce the same output for the same input. 
+The distilled model may underperform the teacher. There is a trade-off between compression, speed, and performance. 
+
+Pruning is a model compression technique in machine learning that is used to reduce the size of the model by removing a section of the model that contributes little to producing results. T
+The most typical example is decision tree pruning, which helps to reduce the model complexity and increase the generalization capacity of the model. 
+
+Quantization changes model weight types from higher resolutions to lower resolutions. 
+For example, we use a typical floating-point number (float64) consuming 64 bits of memory for each weight. 
+Instead, we can use int8 in quantization, which consumes 8 bits for each weight, and naturally has less accuracy in presenting numbers.
+
+
+**Distillation**
+The process of transferring knowledge from a bigger model to a smaller one is called knowledge distillation. Usage of a KL Divergence loss function is the main idea of this approach.
+
+There is a student model, a teacher model and a training dataset. The student model is trained to mimic the teacher model. 
+The teacher model is usually a big model that is trained on a large dataset. 
+The student model is usually a smaller model that is trained on a smaller dataset. 
+The student model is trained to produce the same output as the teacher model for the same input. 
+The student model may not perform as well as the teacher model. There is a trade-off between compression, speed and performance. 
+The student model is trained to produce the same output as the teacher model for the same input.
+
+
+**Pruning**
+We prune the parts of the network that contribute little to the output. Smaller weights are removed from the network. 
+You can pick a threshold and remove the weights that are below the threshold. This is better for serving and inference. 
+Also it is better for generalization. It is a good way to reduce the size of the model. 
+
+**Quantization**
+Reduce the number of bits that are used to represent the weights. For example, we use a typical floating-point number (float64) consuming 64 bits of memory for each weight.
+we can reduce this to 32 bits float, and naturally have less accuracy in presenting numbers.
