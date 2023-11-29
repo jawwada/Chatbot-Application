@@ -291,6 +291,102 @@ you can visualize the reconstructed images using matplotlib:
 import matplotlib.pyplot as plt
 
 ```
+**NLP Concept and Data Example**
+Imagine we want to build a model that translates English sentences to French. Our input (source) is an English sentence, and our output (target) is the corresponding French sentence.
+
+
+Input Data (English Sentence): "Hello world"
+Output Data (French Translation): "Bonjour le monde"
+In a seq2seq model, the encoder will process the English sentence and create a context vector, a condensed representation of the sentence's meaning. The decoder will then use this vector to generate the French translation.
+```
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# Assume we have a simple vocabulary
+word_to_ix = {"hello": 0, "world": 1}
+ix_to_word = {0: "bonjour", 1: "le", 2: "monde"}
+
+# Hyperparameters
+embedding_dim = 256
+hidden_dim = 256
+vocab_size = len(word_to_ix)
+output_size = len(ix_to_word)
+
+# Encoder
+class EncoderRNN(nn.Module):
+    def __init__(self, input_size, hidden_size):
+        super(EncoderRNN, self).__init__()
+        self.hidden_size = hidden_size
+        self.embedding = nn.Embedding(input_size, hidden_size)
+        self.gru = nn.GRU(hidden_size, hidden_size)
+
+    def forward(self, input, hidden):
+        embedded = self.embedding(input).view(1, 1, -1)
+        output, hidden = self.gru(embedded, hidden)
+        return output, hidden
+
+    def initHidden(self):
+        return torch.zeros(1, 1, self.hidden_size)
+
+# Decoder
+class DecoderRNN(nn.Module):
+    def __init__(self, hidden_size, output_size):
+        super(DecoderRNN, self).__init__()
+        self.hidden_size = hidden_size
+        self.embedding = nn.Embedding(output_size, hidden_size)
+        self.gru = nn.GRU(hidden_size, hidden_size)
+        self.out = nn.Linear(hidden_size, output_size)
+        self.softmax = nn.LogSoftmax(dim=1)
+
+    def forward(self, input, hidden):
+        output = self.embedding(input).view(1, 1, -1)
+        output = torch.relu(output)
+        output, hidden = self.gru(output, hidden)
+        output = self.softmax(self.out(output[0]))
+        return output, hidden
+
+# Initialize models
+encoder = EncoderRNN(vocab_size, hidden_dim)
+decoder = DecoderRNN(hidden_dim, output_size)
+
+# Example input
+input_tensor = torch.tensor([word_to_ix["hello"], word_to_ix["world"]], dtype=torch.long)
+
+# Encoding
+encoder_hidden = encoder.initHidden()
+for i in range(input_tensor.size()[0]):
+    encoder_output, encoder_hidden = encoder(input_tensor[i], encoder_hidden)
+
+# Decoding
+decoder_input = torch.tensor([[0]], dtype=torch.long)  # SOS token
+decoder_hidden = encoder_hidden
+
+decoded_words = []
+for i in range(3):  # Let's limit the output length for simplicity
+    decoder_output, decoder_hidden = decoder(decoder_input, decoder_hidden)
+    topv, topi = decoder_output.topk(1)
+    decoded_words.append(ix_to_word[topi.item()])
+    decoder_input = topi.squeeze().detach()
+
+print("Translated:", " ".join(decoded_words))
+
+
+```
+Explanation:
+Encoder: The EncoderRNN takes the input words (in this case, "hello" and "world"), embeds them into a higher-dimensional space, and then processes them with a GRU (Gated Recurrent Unit) to produce the context vector (encoder_hidden).
+
+Decoder: The DecoderRNN starts with a special start-of-sequence (SOS) token and the context vector. It then generates one word at a time, using its own GRU and a linear layer to select the most likely next word.
+
+Translation: The model generates a sequence of French words based on the context vector. In this simplified example, the translation is done word-by-word without considering the actual grammar or sentence structure.
+
+Note:
+This example is highly simplified and does not represent a practical translation model. Real-world applications would require:
+
+A much larger and more complex vocabulary.
+Handling of varying input and output lengths.
+More sophisticated handling of sentence structure and context.
+Training the model on a large dataset of parallel sentences in both languages
 
 
 
