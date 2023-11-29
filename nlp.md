@@ -390,45 +390,6 @@ Training the model on a large dataset of parallel sentences in both languages
 
 
 
-### BERT (Bidirectional Encoder Representations from Transformers) is a Transformer-based machine learning technique for natural language processing (NLP) pre-training developed by Google. BERT was created and published in 2018 by Jacob Devlin and his colleagues from Google. As of 2019, Google has been leveraging BERT to better understand user searches. BERT is a method of pre-training language representations, meaning that we train a general-purpose "language understanding" model on a large text corpus (like Wikipedia), and then use that model for downstream NLP tasks that we care about (like question answering). BERT outperforms previous methods because it is the first unsupervised, deeply bidirectional system for pre-training NLP.
-**Key Components of BERT's Architecture:**
-Transformer Model:
-
-BERT is based on the Transformer architecture, which relies heavily on an attention mechanism to draw global dependencies between input and output.
-The Transformer includes two separate mechanisms: an encoder that reads the text input and a decoder that produces a prediction for the task. BERT only uses the Transformer's encoder mechanism.
-Attention Mechanism:
-
-At the heart of BERT (and the Transformer) is the attention mechanism, specifically "multi-head self-attention".
-This mechanism allows the model to weigh the importance of different words in a sentence in the context of all other words, leading to a rich, contextualized word representation.
-Bidirectionality:
-
-Traditional language models were either left-to-right or right-to-left, but BERT is designed to be deeply bidirectional.
-This bidirectionality is achieved through a novel pre-training task called "Masked Language Model" (MLM), where some percentage of the input tokens are masked at random, and the model is trained to predict these masked tokens.
-Pre-training and Fine-tuning:
-
-BERT involves two stages: pre-training and fine-tuning.
-During pre-training, the model is trained on a large corpus of text (like Wikipedia and BooksCorpus) on two tasks: MLM and Next Sentence Prediction (NSP). This stage allows BERT to learn a general understanding of language.
-During fine-tuning, BERT is further trained on a smaller, task-specific dataset.
-Embedding Layers:
-
-BERT uses a combination of token embeddings, segment embeddings, and position embeddings.
-Token embeddings represent the individual words.
-Segment embeddings allow the model to distinguish between different sentences (useful for tasks that require understanding the relationship between sentences).
-Position embeddings provide the model with positional information about the tokens, as the Transformer does not have a recurrent structure to naturally understand sequence order.
-Layer and Model Variants:
-
-BERT comes in different sizes. The base model (BERT-Base) has 12 layers (transformer blocks), 12 attention heads, and 110 million parameters. BERT-Large has 24 layers, 16 attention heads, and 340 million parameters.
-Example of BERT Processing a Sentence:
-Input Representation:
-
-A sentence is tokenized into words or subwords (WordPiece tokenization). Special tokens like [CLS] (used at the start of every sequence for classification tasks) and [SEP] (used to separate sentences) are added.
-Passing Through Layers:
-
-The input tokens pass through each layer of the Transformer. In each layer, the self-attention mechanism allows the model to consider other words in the sentence as it processes each word.
-The output of each layer is the input to the next layer.
-Output:
-
-The final layer's output can be used for various NLP tasks. The [CLS] token's representation, in particular, is often used in classification tasks as it contains the aggregate information of the entire sequence.
 
 ### Mastering Transformers , summary
 
@@ -700,4 +661,44 @@ Multiplication of the attention score and the V matrix produces the final result
 The main reason for it being called self-attention is because of its unified input X; Q, K, and V are computed from X.
 
 
+### BERT (Bidirectional Encoder Representations from Transformers)
+is a Transformer-based machine learning technique for natural language processing (NLP) pre-training developed by Google. BERT was created and published in 2018 by Jacob Devlin and his colleagues from Google. As of 2019, Google has been leveraging BERT to better understand user searches. BERT is a method of pre-training language representations, meaning that we train a general-purpose "language understanding" model on a large text corpus (like Wikipedia), and then use that model for downstream NLP tasks that we care about (like question answering). BERT outperforms previous methods because it is the first unsupervised, deeply bidirectional system for pre-training NLP.
+**Key Components of BERT's Architecture:**
+Transformer Model:
+
+BERT is based on the Transformer architecture, which relies heavily on an attention mechanism to draw global dependencies between input and output.
+The Transformer includes two separate mechanisms: an encoder that reads the text input and a decoder that produces a prediction for the task. BERT only uses the Transformer's encoder mechanism.
+Attention Mechanism:
+
+At the heart of BERT (and the Transformer) is the attention mechanism, specifically "multi-head self-attention".
+This mechanism allows the model to weigh the importance of different words in a sentence in the context of all other words, leading to a rich, contextualized word representation.
+Bidirectionality:
+
+Traditional language models were either left-to-right or right-to-left, but BERT is designed to be deeply bidirectional.
+This bidirectionality is achieved through a novel pre-training task called "Masked Language Model" (MLM), where some percentage of the input tokens are masked at random, and the model is trained to predict these masked tokens.
+Pre-training and Fine-tuning:
+
+BERT involves two stages: pre-training and fine-tuning.
+During pre-training, the model is trained on a large corpus of text (like Wikipedia and BooksCorpus) on two tasks: MLM and Next Sentence Prediction (NSP). This stage allows BERT to learn a general understanding of language.
+During fine-tuning, BERT is further trained on a smaller, task-specific dataset.
+Embedding Layers:
+
+BERT uses a combination of token embeddings, segment embeddings, and position embeddings.
+Token embeddings represent the individual words.
+Segment embeddings allow the model to distinguish between different sentences (useful for tasks that require understanding the relationship between sentences).
+Position embeddings provide the model with positional information about the tokens, as the Transformer does not have a recurrent structure to naturally understand sequence order.
+Layer and Model Variants:
+
+BERT comes in different sizes. The base model (BERT-Base) has 12 layers (transformer blocks), 12 attention heads, and 110 million parameters. BERT-Large has 24 layers, 16 attention heads, and 340 million parameters.
+Example of BERT Processing a Sentence:
+Input Representation:
+
+A sentence is tokenized into words or subwords (WordPiece tokenization). Special tokens like [CLS] (used at the start of every sequence for classification tasks) and [SEP] (used to separate sentences) are added.
+Passing Through Layers:
+
+The input tokens pass through each layer of the Transformer. In each layer, the self-attention mechanism allows the model to consider other words in the sentence as it processes each word.
+The output of each layer is the input to the next layer.
+Output:
+
+The final layer's output can be used for various NLP tasks. The [CLS] token's representation, in particular, is often used in classification tasks as it contains the aggregate information of the entire sequence.
 
