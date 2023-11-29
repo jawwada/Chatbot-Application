@@ -512,7 +512,29 @@ for example, the big matrices are not suitable for training a model.
 This early model managed to produce fast and efficient static word embeddings. 
 It transformed unsupervised textual data into supervised data (self-supervised learning) by either predicting the 
 target word using context or predicting neighbor words based on a sliding window. 
+The following piece of code illustrates how to train word vectors for the sentences of the play Macbeth: 
+```
+from gensim.models import Word2vec 
+model = Word2vec(sentences=macbeth, size=100, window= 4, min_count=10, workers=4, iter=10) 
+```
+The code trains the word embeddings with a vector size of 100 by a sliding 5-length context window. To visualize the words embeddings, we need to reduce the dimension to 3 by applying Principal Component Analysis (PCA) as shown in the following code snippet: 
+```
+import matplotlib.pyplot as plt 
+from sklearn.decomposition import PCA 
+import random np.random.seed(42) 
+words=list([e for e in model.wv.vocab if len(e)>4]) 
+random.shuffle(words) 
+words3d = PCA(n_components=3,random_state=42).fit_transform(model.wv[words[:100]]) 
+def plotWords3D(vecs, words, title):
+    fig = plt.figure(figsize=(10, 10))
+    ax = fig.add_subplot(111, projection='3d')
+    ax.scatter(vecs[:, 0], vecs[:, 1], vecs[:, 2], c='b', marker='o')
+    for word, x, y, z in zip(words, vecs[:, 0], vecs[:, 1], vecs[:, 2]):
+        ax.text(x, y, z, word)
 
+plotWords3D(words3d, words, "Visualizing Word2vec Word Embeddings using PCA")
+```
+\
 **GloVe**, another widely used and popular model, argued that count-based models can be better than neural models. 
 It leverages both global and local statistics of a corpus to learn embeddings based on word-word co-occurrence statistics. 
 It performed well on some syntactic and semantic tasks, as shown in the following screenshot. 
