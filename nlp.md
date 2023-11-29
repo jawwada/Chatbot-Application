@@ -460,6 +460,54 @@ falling short in solving the problems of sparsity, unseen words representation,
 tracking long-term dependencies**, and others. In order to cope with these weaknesses, 
 we developed DL-based approaches such as the following: RNNs CNNs
 
+**Bow, ngrams, tf-idf**
+In a BoW approach, words and documents are represented with a one-hot encoding as a sparse way of representation, also known as the Vector Space Model (VSM). Text classification, word similarity, semantic relation extraction, word-sense disambiguation, and many other NLP problems have been solved by these one-hot encoding techniques for years. On the other hand, n-gram language models assign probabilities to sequences of words so that we can either compute the probability that a sequence belongs to a corpus or generate a random sequence based on a given corpus.
+A BoW is a representation technique for documents by counting the words in them. The main data structure of the technique is a document-term matrix. Let's see a simple implementation of BoW with Python. The following piece of code illustrates how to build a document-term matrix with the Python sklearn library for a toy corpus of three sentences: 
+```
+from sklearn.feature_extraction.text 
+import TfidfVectorizer 
+import numpy as np 
+import pandas as pd 
+toy_corpus= ["the fat cat sat on the mat", "the big cat slept", "the dog chased a cat"] 
+vectorizer=TfidfVectorizer() 
+corpus_tfidf=vectorizer.fit_transform(toy_corpus) 
+print(f"The vocabulary size is \ {len(vectorizer.vocabulary_.keys())} ") 
+print(f"The document-term matrix shape is\ {corpus_tfidf.shape}") 
+df=pd.DataFrame(np.round(corpus_tfidf.toarray(),2)) 
+df.columns=vectorizer.get_feature_names() T
+```
+he output of the code is a document-term matrix, as shown in the following screenshot. 
+The size is (3 x 10), but in a realistic scenario the matrix size can grow to much larger numbers such as 10K x 10M\
+
+
+The table indicates a count-based mathematical matrix where the cell values are transformed by a 
+Term Frequency-Inverse Document Frequency (TF-IDF) weighting schema. 
+This approach does not care about the position of words. **Since the word order strongly determines the meaning, 
+ignoring it leads to a loss of meaning. This is a common problem in a BoW method, which is finally solved by a recursion mechanism 
+in RNN and positional encoding in Transformers.**
+Each column in the matrix stands for the vector of a word in the vocabulary, and each row stands for the vector of a document.
+Semantic similarity metrics can be applied to compute the similarity or dissimilarity of the words as well as documents. 
+Most of the time, we use **bigrams** such as cat_sat and the_street to enrich the document representation. 
+For instance, as the parameter ngram_range=(1,2) is passed to TfidfVectorizer, it builds a vector space containing 
+both unigrams (big, cat, dog) and bigrams (big_cat, big_dog). 
+Thus, such models are also called bag-of-n-grams, which is a natural extension of BoW. 
+If a word is commonly used in each document, it can be considered to be high-frequency, such as and the. 
+Conversely, some words hardly appear in documents, called low-frequency (or rare) words. 
+As high-frequency and low-frequency words may prevent the model from working properly, 
+TF-IDF, which is one of the most important and well-known weighting mechanisms, is used here as a solution. 
+Inverse Document Frequency (IDF) is a statistical weight to measure the importance of a word in a document—for example, 
+while the word the has no discriminative power, chased can be highly informative and give clues about the subject of the text. 
+This is because high-frequency words (stopwords, functional words) have little discriminating power in understanding the documents. 
+The discriminativeness of the terms also depends on the domain—for instance, 
+a list of DL articles is most likely to have the word network in almost every document. 
+IDF can scale down the weights of all terms by using their Document Frequency (DF), 
+where the DF of a word is computed by the number of documents in which a term appears. 
+Term Frequency (TF) is the raw count of a term (word) in a document.
+
+**dimensionality problem**
+The dimensionality problem is a common problem in BoW and n-gram models. it is a sparse representation of the documents.
+for example, the big matrices are not suitable for training a model.
+
 **Word2vec**, sorted out the dimensionality problem by producing short and dense representations of the words, called word embeddings. 
 This early model managed to produce fast and efficient static word embeddings. 
 It transformed unsupervised textual data into supervised data (self-supervised learning) by either predicting the 
@@ -473,4 +521,8 @@ We can learn the generalization of gender relations, which is a semantic relatio
 man and woman (man-> woman). Then, we can arithmetically estimate the vector of actress by adding the vector of 
 the term actor and the offset calculated before. Likewise, we can learn syntactic relations such as word plural forms. 
 For instance, if the vectors of Actor, Actors, and Actress are given, we can estimate the vector of Actresses.
+
+**ELMo**, a deep contextualized word representation model, was the first model to introduce the concept of contextual word embeddings.
+It was a deep bidirectional language model that was trained on a large corpus of text. 
+****
 
