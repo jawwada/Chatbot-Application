@@ -1,12 +1,13 @@
-# End-to-End Chatbot Intent Classifier
+# Extensible Intent Classifier Application for chatbot
 
-A intent classification chatbot application written in pytorch and flask that is language agnostic, scalable and dynamic to load any deep learning models. Additionally, I show how to manage and log experiments for trying any varations of the models. The whole architecture is setup through many small services to make it as stateless as possible.
+An extensible intent classification application for a chatbot written in pytorch and flask that is language agnostic, scalable and stateless. Additionally, I show how to manage and log experiments for trying any varations of the models. 
 
 ## Intent Classification
-This project is a showcase for end-to-end machine learning development process.
+
 It has a deep neural networks based nlp model(97.5% accuracy on test data in some tests), 
 docker-based Flask web server, enabling request handling and server interaction 
-and put in practise AI engineering at different levels of maturity.
+and put in practise AI engineering to enable a flexible and microservices based approach to the architecture.
+
 I tried to explain the process in the notebooks, and I believe from there on one can see how the missing pieces will fit in.
 
 ## Project Overview
