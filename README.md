@@ -1,4 +1,6 @@
-# ultimate-ai-challenge
+# End-to-End Chatbot Intent Classifier
+
+A intent classification chatbot application written in pytorch and flask that is language agnostic, scalable and dynamic to load any deep learning models. Additionally, I show how to manage and log experiments for trying any varations of the models. The whole architecture is setup through many small services to make it as stateless as possible.
 
 ## Intent Classification
 This project is a showcase for end-to-end machine learning development process.
