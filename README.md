@@ -45,9 +45,8 @@ json configs setting the environment and flexibility to save and load models, mo
 
 ## Quick Start
 
-To run the project from shell/locally , navigate to the project directory and set the PYTHONPATH:
+To run the project from shell/locally , cd to the project directory and set the PYTHONPATH:
 ```bash
-cd ultimate-ai-challenge
 export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 ```
 
